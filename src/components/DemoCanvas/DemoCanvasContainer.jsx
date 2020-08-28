@@ -5,6 +5,8 @@ import { connect } from 'react-redux';
 
 const DemoCanvasContainer = (props) => {
 
+    // props.blocks   -  тут появяться данные с серва
+
     useEffect(() => {
         props.getBlocksData(); //  запрос
     }, [])
