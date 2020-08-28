@@ -47,9 +47,7 @@ background-image: linear-gradient(
 `
 
 const DemoCanvas = (props: any) => {
-
     
-
     return (
         <Container
 		    background={ props.background || 'rgb(60, 60, 60)' }

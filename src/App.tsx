@@ -1,10 +1,11 @@
 import React from 'react';
-import DemoCanvas from './components/DemoCanvas/DemoCanvas';
+import DemoCanvasContainer from './components/DemoCanvas/DemoCanvasContainer';
+
 
 
 function App() {
   return (
-    <DemoCanvas />
+    <DemoCanvasContainer />
   );
 }
 
