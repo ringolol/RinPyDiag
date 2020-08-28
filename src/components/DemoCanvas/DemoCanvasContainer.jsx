@@ -1,11 +1,11 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import DemoCanvas from './DemoCanvas';
 import { getBlocksData } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
 
 const DemoCanvasContainer = (props) => {
 
-    React.useEffect(() => {
+    useEffect(() => {
         props.getBlocksData(); //  запрос
     }, [])
     
