@@ -7,6 +7,7 @@ const instance = axios.create({
 export const blocksAPI = {
     getBlocks () {
         return instance.get('/diagram/api/blocks', {
+                // эт над будет заменить на куки
                 auth: {
                     username: 'kek',
                     password: '12344321aA'
@@ -18,6 +19,7 @@ export const blocksAPI = {
 export const filesAPI = {
     getFiles () {
         return instance.get('/diagram/api/files', {
+                // эт над будет заменить на куки
                 auth: {
                     username: 'kek',
                     password: '12344321aA'
