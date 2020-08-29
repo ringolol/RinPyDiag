@@ -74,7 +74,7 @@ const Canvas = () => {
 
     const link1 = port1.link<DefaultLinkModel>(port2);
     link1.getOptions().testName = 'Test';
-    link1.addLabel('Hello World!');
+    // link1.addLabel('Hello World!');
 
     model.addAll(node1, node2, link1);
 
