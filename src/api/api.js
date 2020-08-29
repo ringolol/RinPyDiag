@@ -8,8 +8,8 @@ export const blocksAPI = {
     getBlocks () {
         return instance.get('/diagram/api/blocks', {
                 auth: {
-                    username: 'admin',
-                    password: '0192837465aAaAcCcC'
+                    username: 'kek',
+                    password: '12344321aA'
             }})
             .then((val) => { console.log(val); })
     }
@@ -19,8 +19,8 @@ export const filesAPI = {
     getFiles () {
         return instance.get('/diagram/api/files', {
                 auth: {
-                    username: 'admin',
-                    password: '0192837465aAaAcCcC'
+                    username: 'kek',
+                    password: '12344321aA'
             }})
             .then((val) => { console.log(val); })
     }
