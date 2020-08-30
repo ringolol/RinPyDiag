@@ -2,20 +2,20 @@ import React, { useEffect } from 'react';
 import { getBlocksData } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
 
-import { BodyWidget } from './components/DemoCanvas/BodyWidget';
-import { Application } from './components/DemoCanvas/Application';
+import { BodyWidget } from './BodyWidget';
+import { DiagApplication } from './DiagApplication';
 
 const DemoCanvasContainer = (props) => {
 
     // props.blocks   -  тут появяться данные с серва
 
-    var app = new Application();
+    var app = new DiagApplication();
 
     useEffect(() => {
         props.getBlocksData(); //  запрос
     }, [])
     
-    return (<BodyWidget app={app} />);
+    return ( <BodyWidget app={app} /> );
 }
 
 const mapStateToProps = (state) => ({
