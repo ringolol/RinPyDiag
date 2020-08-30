@@ -4,18 +4,25 @@ import { connect } from 'react-redux';
 
 import { BodyWidget } from './BodyWidget';
 import { DiagApplication } from './DiagApplication';
+import { render } from '@testing-library/react';
 
-const DemoCanvasContainer = (props) => {
+class DemoCanvasContainer extends React.Component {
+    constructor(props) {
+        super(props);  // Просто прокидывание пропсов из редакс. 
+        // Ваще оно так по умолчанию делаеться, просто тут надо было открывать конструктор.
+        this.app = new DiagApplication();
+    }
 
-    // props.blocks   -  тут появяться данные с серва
-
-    var app = new DiagApplication();
-
-    useEffect(() => {
-        props.getBlocksData(); //  запрос
-    }, [])
+    componentDidMount() {
+        this.props.getBlocksData();
+    }
     
-    return ( <BodyWidget app={app} /> );
+    render() {
+        return ( 
+        <BodyWidget 
+            app={this.app}
+            blocks={this.props.blocks} /> );
+    }
 }
 
 const mapStateToProps = (state) => ({

@@ -42,12 +42,17 @@ export const Layer = styled.div`
 
 export class BodyWidget extends React.Component<BodyWidgetProps> {
 	// эти блоки мы будем брать с серва ( api: /diagram/api/blocks )
+
+	showBlocksInConsole = () => {
+		console.log(this.props.blocks)
+	}
 	
 	render() {
 		return (
 			<Body>
 				<Header>
 					<div className="title">Storm React Diagrams - DnD demo</div>
+					<button onClick={ this.showBlocksInConsole }> Show blocks in console </button>
 				</Header>
 				<Content>
 					<TrayWidget>
