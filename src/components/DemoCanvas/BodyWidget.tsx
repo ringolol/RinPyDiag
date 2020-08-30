@@ -10,6 +10,11 @@ import styled from '@emotion/styled';
 
 export interface BodyWidgetProps {
 	app: DiagApplication;
+	blocks: any;
+	files: any;
+	text: any;
+	setText: any;
+	sendTextForServer: any;
 }
 
 export const Body = styled.div`
@@ -41,32 +46,52 @@ export const Layer = styled.div`
 `;
 
 export class BodyWidget extends React.Component<BodyWidgetProps> {
-	// эти блоки мы будем брать с серва ( api: /diagram/api/blocks )
+	
+	constructor(props: any) {
+		super(props);
+	}
+
+	showBlocksInConsole = () => {
+		console.log(this.props)
+	}
+
+	onTextChange = (event: any) => {
+		let text = event.target.value;
+		this.props.setText(text);
+	}
+
+	onSendText = () => {
+		this.props.sendTextForServer(this.props.text);
+	}
 	
 	render() {
+		// эти блоки мы берем с серва ( api: /diagram/api/blocks )
+		const blocks = this.props.blocks.map((block: any) => {
+			return <TrayItemWidget key={ block.name } model={{ block: block }} name={ block.name } color="rgb(150,150,150)" />
+		})
+
 		return (
 			<Body>
 				<Header>
 					<div className="title">Storm React Diagrams - DnD demo</div>
+					<button onClick={ this.showBlocksInConsole }> Show blocks in console </button>
+					<input type='text' value={ this.props.text } onChange={ this.onTextChange } />
+					<button onClick={ this.onSendText }>Send data</button>
 				</Header>
 				<Content>
 					<TrayWidget>
-						<TrayItemWidget model={{ type: 'in' }} name="In Node" color="rgb(192,255,0)" />
-						<TrayItemWidget model={{ type: 'out' }} name="Out Node" color="rgb(0,192,255)" />
+						{ blocks }
 					</TrayWidget>
 					<Layer
 						onDrop={(event) => {
 							var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
-							var nodesCount = _.keys(this.props.app.getDiagramEngine().getModel().getNodes()).length;
-
-							
 							var node: DefaultNodeModel;
-							if (data.type === 'in') {
-								node = new DefaultNodeModel('Node ' + (nodesCount + 1), 'rgb(192,255,0)');
-								node.addInPort('In');
-							} else {
-								node = new DefaultNodeModel('Node ' + (nodesCount + 1), 'rgb(0,192,255)');
-								node.addOutPort('Out');
+							node = new DefaultNodeModel(data.block.name, 'rgb(150,150,150)');
+							for (let i = 0; i < data.block.inpN; i++) {
+								node.addInPort('In_' + i);
+							}
+							for (let i = 0; i < data.block.outpN; i++) {
+								node.addOutPort('Out_' + i);
 							}
 							var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
 							node.setPosition(point);

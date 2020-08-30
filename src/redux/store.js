@@ -9,4 +9,6 @@ let reducersPack = combineReducers({
 
 const store = createStore(reducersPack, applyMiddleware(thunkMiddleware));
 
+window.store = store;
+
 export default store;
