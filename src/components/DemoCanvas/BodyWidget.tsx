@@ -41,6 +41,8 @@ export const Layer = styled.div`
 `;
 
 export class BodyWidget extends React.Component<BodyWidgetProps> {
+	// эти блоки мы будем брать с серва ( api: /diagram/api/blocks )
+	
 	render() {
 		return (
 			<Body>
@@ -57,7 +59,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 							var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
 							var nodesCount = _.keys(this.props.app.getDiagramEngine().getModel().getNodes()).length;
 
-							// эти блоки мы будем брать с серва ( api: /diagram/api/blocks )
+							
 							var node: DefaultNodeModel;
 							if (data.type === 'in') {
 								node = new DefaultNodeModel('Node ' + (nodesCount + 1), 'rgb(192,255,0)');
