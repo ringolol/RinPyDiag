@@ -34,7 +34,7 @@ export const filesAPI = {
                     username: 'kek',
                     password: '12344321aA'
             }})
-            .then((val) => { console.log(val); })
+            .then(respones => respones.data)
     }
 }
 
