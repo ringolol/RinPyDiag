@@ -24,7 +24,7 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps> {
 	render() {
 		return (
 			<Tray
-				color='gray'//{this.props.color}
+				color={ this.props.color || 'gray' }
 				draggable={true}
 				onDragStart={(event) => {
 					event.dataTransfer.setData('storm-diagram-node', JSON.stringify(this.props.model));
