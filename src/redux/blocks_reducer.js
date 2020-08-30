@@ -70,7 +70,7 @@ export const sendTextForServer = (text) =>  (dispatch) => {
         setTimeout(() =>{
             console.log(`Send to server: ${text}`);
             resolve(true)
-        }, 5000)
+        }, 1000)
     })
 
     asynchrone.then(() => {
