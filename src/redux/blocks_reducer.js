@@ -30,7 +30,7 @@ const blocksReducer = (state = initialState, action) => {
         case IS_LOADED: {
             return {
                 ...state,
-                isLoaded: true,
+                isLoaded: action.isLoaded,
             }
         }
         case SET_TEXT: {
@@ -44,8 +44,8 @@ const blocksReducer = (state = initialState, action) => {
     }  
 }
 
-export const setBlocksData = (blocks) => ({ type: GET_BLOCKS, blocks });
-export const setFilesData = (files) => ({ type: GET_FILES, files });
+export const setBlocks = (blocks) => ({ type: GET_BLOCKS, blocks });
+export const setFiles = (files) => ({ type: GET_FILES, files });
 export const setIsLoaded = (isLoaded) => ({ type: IS_LOADED, isLoaded });
 export const setText = (text) => ({ type: SET_TEXT, text });
 
@@ -57,8 +57,8 @@ export const getBlocksData = () =>  (dispatch) => {
 
     Promise.all([blocks, files])
     .then((resolve) => {
-        dispatch(setBlocksData(resolve[0]));
-        dispatch(setFilesData(resolve[1]));
+        dispatch(setBlocks(resolve[0]));
+        dispatch(setFiles(resolve[1]));
         dispatch(setIsLoaded(true));
     })
       
