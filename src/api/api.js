@@ -5,6 +5,13 @@ const instance = axios.create({
     // withCredentials: true
 });
 
+const auth = {
+    auth: {
+        username: 'kek',
+        password: '12344321aA'
+    }
+}
+
 export const authAPI = {
     login () {
         
@@ -15,26 +22,24 @@ export const authAPI = {
 }
 
 export const blocksAPI = {
-    getBlocks () {
-        return instance.get('/diagram/api/blocks/', {
-                // эт над будет заменить на куки
-                auth: {
-                    username: 'kek',
-                    password: '12344321aA'
-            }})
-            .then(respones => respones.data);
+    async getBlocks () {
+        try {
+            const response = await axios.get('http://31.134.153.18/diagram/api/blocks', auth);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
 export const filesAPI = {
-    getFiles () {
-        return instance.get('/diagram/api/files', {
-                // эт над будет заменить на куки
-                auth: {
-                    username: 'kek',
-                    password: '12344321aA'
-            }})
-            .then(respones => respones.data)
+    async getFiles () {
+        try {
+            const response = await axios.get('http://31.134.153.18/diagram/api/files', auth);
+            return response.data;
+        } catch (error) {
+            console.log(error);
+        }
     }
 }
 
