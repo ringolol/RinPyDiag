@@ -67,7 +67,13 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 	render() {
 		// эти блоки мы берем с серва ( api: /diagram/api/blocks )
 		const blocks = this.props.blocks.map((block: any) => {
-			return <TrayItemWidget key={ block.name } model={{ block: block }} name={ block.name } color="rgb(150,150,150)" />
+			return (
+				<TrayItemWidget 
+					key={ block.name } 
+					model={{ block: block }} 
+					name={ block.name } 
+					color="rgb(150,150,150)" />
+			)
 		})
 
 		return (

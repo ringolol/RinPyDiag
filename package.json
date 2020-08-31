@@ -22,6 +22,7 @@
     "ml-matrix": "^6.5.1",
     "pathfinding": "^0.4.18",
     "paths-js": "^0.4.11",
+    "qs": "^6.9.4",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-redux": "^7.2.1",

@@ -4,8 +4,6 @@ import { connect } from 'react-redux';
 
 import { BodyWidget } from './BodyWidget';
 import { DiagApplication } from './DiagApplication';
-import { render } from '@testing-library/react';
-import { identity } from 'lodash';
 
 class DemoCanvasContainer extends React.Component {
     constructor(props) {
