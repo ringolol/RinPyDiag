@@ -1,44 +1,141 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# REST-api
 
-## Available Scripts
+## Содержание
+* [/api-token-auth/](#api-token-auth)
+  * [GET](#GET)
+* [/diagram/api/blocks/](#diagramapiblocks)
+  * [GET](#GET-1)
+* [/diagram/api/files/](#diagramapifiles)
+  * [GET](#GET-2)
+  * [POST](#POST)
 
-In the project directory, you can run:
+## /api-token-auth/
 
-### `yarn start`
+### GET
+*Создать токен для авторизации*
 
-Runs the app in the development mode.<br />
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Поля:
+* username
+* password
 
-The page will reload if you make edits.<br />
-You will also see any lint errors in the console.
+Пример:
+```js
+{
+    username: 'username',
+    password: 'password'
+}
+```
 
-### `yarn test`
+Заголовок: ```{}```
 
-Launches the test runner in the interactive watch mode.<br />
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Пример ответ:
+```js
+{
+    ...
+    data: {
+        ...
+        token: krakoziabra777,
+        ...
+    },
+    ...
+}
+```
 
-### `yarn build`
+## /diagram/api/blocks/
 
-Builds the app for production to the `build` folder.<br />
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### GET
+*Забрать типы блоков для диаграммы*
 
-The build is minified and the filenames include the hashes.<br />
-Your app is ready to be deployed!
+Поля: ```{}```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+Заголовок:
+```js
+{
+    'Authorization': `Token ${token}`
+}
+```
 
-### `yarn eject`
+Пример ответ:
+```js
+[
+    {
+        "name": "const",
+        "inpN": 0,
+        "outpN": 1,
+        "pars": {
+            "val": 1
+        },
+        "states": {}
+    },
+    {
+        "name": "integ",
+        "inpN": 1,
+        "outpN": 1,
+        "pars": {},
+        "states": {
+            "0": 0
+        }
+    }
+]
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+## /diagram/api/files/
+*Файлы юзера с диаграммами*
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### GET
+*Забрать файлы с сервера*
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+Поля: ```{}```
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+Заголовок:
+```js
+{
+    'Authorization': `Token ${token}`
+}
+```
 
-## Learn More
+Пример ответ:
+```js
+[
+    {
+        "user": "username",
+        "name": "diag-name1",
+        "ser": { ... }
+    },
+    {
+        "user": "username",
+        "name": "diag-name2",
+        "ser": { ... }
+    }
+]
+```
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### POST
+*Загрузить файл на сервер*
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+Поля:
+  * user (имя юзера)
+  * name (имя файла)
+  * ser (сериализованная диаграмма)
+
+Пример:
+```js
+{
+    user: "username",
+    name: "diag-name",
+    ser: { ... }
+}
+```
+
+Заголовок:
+```js
+{
+    'Authorization': `Token ${token}`,
+    'Content-Type': 'application/json'
+}
+```
+
+Пример ответа:
+```js
+???
+```
