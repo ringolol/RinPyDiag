@@ -37,7 +37,9 @@
 
 Заголовок:
 ```js
-'Authorization': `Token ${token}` 
+{
+    'Authorization': `Token ${token}`
+}
 ```
 
 ## /diagram/api/files/
@@ -50,7 +52,9 @@
 
 Заголовок:
 ```js
-'Authorization': `Token ${token}` 
+{
+    'Authorization': `Token ${token}`
+}
 ```
 
 ### POST
@@ -63,9 +67,17 @@
 
 Пример:
 ```js
-let test_json = {
+{
     user: "username",
     name: "diag-name",
     ser: { ... }
+}
+```
+
+Заголовок:
+```js
+{
+    'Authorization': `Token ${token}`,
+    'Content-Type': 'application/json'
 }
 ```
