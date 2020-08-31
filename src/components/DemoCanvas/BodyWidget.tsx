@@ -12,9 +12,14 @@ export interface BodyWidgetProps {
 	app: DiagApplication;
 	blocks: any;
 	files: any;
-	text: any;
+	filename: any;
 	setText: any;
-	sendTextForServer: any;
+	sendFile: any;
+	setUserName: any;
+	setPassword: any;
+	onLogIn: any;
+	username: any;
+	password: any;
 }
 
 export const Body = styled.div`
@@ -60,8 +65,23 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 		this.props.setText(text);
 	}
 
-	onSendText = () => {
-		this.props.sendTextForServer(this.props.text);
+	onSendFile = (event: any) => {
+		this.props.sendFile(this.props.filename, this.props.app.getSerialized());
+	}
+
+	onUserNameChange = (event: any) => {
+		let username = event.target.value;
+		this.props.setUserName(username);
+	}
+
+	onPasswordChange = (event: any) => {
+		let password = event.target.value;
+		this.props.setPassword(password);
+	}
+
+	onLogIn = (event: any) => {
+		console.log([this.props.username, this.props.password])
+		this.props.onLogIn(this.props.username, this.props.password);
 	}
 	
 	render() {
@@ -80,9 +100,11 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 			<Body>
 				<Header>
 					<div className="title">Storm React Diagrams - DnD demo</div>
-					<button onClick={ this.showBlocksInConsole }> Show blocks in console </button>
-					<input type='text' value={ this.props.text } onChange={ this.onTextChange } />
-					<button onClick={ this.onSendText }>Send data</button>
+					<input type='text' value={ this.props.username } onChange={ this.onUserNameChange } />
+					<input type='text' value={ this.props.password } onChange={ this.onPasswordChange } />
+					<button onClick={ this.onLogIn }>Login</button>
+					<input type='text' value={ this.props.filename } onChange={ this.onTextChange } />
+					<button onClick={ this.onSendFile }>Save File</button>
 				</Header>
 				<Content>
 					<TrayWidget>

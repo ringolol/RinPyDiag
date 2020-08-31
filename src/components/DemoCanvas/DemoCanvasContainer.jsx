@@ -1,5 +1,10 @@
 import React, { useEffect } from 'react';
-import { getBlocksData, setText, sendTextForServer } from '../../redux/blocks_reducer';
+import {    
+            setText, 
+            sendFile, 
+            setUserName, 
+            setPassword,
+            onLogIn } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
 
 import { BodyWidget } from './BodyWidget';
@@ -13,27 +18,44 @@ class DemoCanvasContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getBlocksData();
+        this.props.onLogIn();
     }
 
     setText = (text) => {
         this.props.setText(text);
     }
 
-    sendTextForServer = (text) => {
-        this.props.sendTextForServer(text);
+    sendFile = (filename, ser) => {
+        this.props.sendFile(filename, ser);
+    }
+
+    setUserName = (username) => {
+        this.props.setUserName(username);
+    }
+
+    setPassword = (password) => {
+        this.props.setPassword(password);
+    }
+
+    onLogIn = (username, password) => {
+        this.props.onLogIn(username, password);
     }
     
     render() {
         if (!this.props.isLoaded) return <div>Loading</div>
         return ( 
         <BodyWidget 
-            app={this.app}
-            blocks={this.props.blocks}
-            files={this.props.files}
-            text={ this.props.text }
+            app={ this.app }
+            blocks={ this.props.blocks }
+            files={ this.props.files }
+            filename={ this.props.text }
             setText={ this.setText }
-            sendTextForServer={ this.sendTextForServer }
+            sendFile={ this.sendFile }
+            onLogIn={ this.onLogIn }
+            username={ this.props.username }
+            password={ this.props.password }
+            setUserName={ this.setUserName }
+            setPassword={ this.setPassword }
              /> );
     }
 }
@@ -42,12 +64,16 @@ const mapStateToProps = (state) => ({
     blocks: state.blocksPage.blocks,
     files: state.blocksPage.files,
     isLoaded: state.blocksPage.isLoaded,
-    text: state.blocksPage.text
+    text: state.blocksPage.text,
+    username: state.blocksPage.username,
+    password: state.blocksPage.password,
 }) 
 
 
 export default connect(mapStateToProps, {
-    getBlocksData,
     setText, 
-    sendTextForServer
+    sendFile,
+    setUserName,
+    setPassword,
+    onLogIn,
 })(DemoCanvasContainer);
