@@ -1,8 +1,9 @@
 import * as axios from 'axios';
 
 const instance = axios.create({
-    baseURL: 'http://31.134.153.18/',
-    // baseURL: 'http://127.0.0.1:8000/',
+    // withCredentials: true,
+    // baseURL: 'http://31.134.153.18/',
+    baseURL: 'http://127.0.0.1:8000/',
 });
 
 // http POST http://31.134.153.18/api-token-auth/ username="admin" password="12344321aA"
@@ -13,16 +14,28 @@ const instance = axios.create({
 
 
 // временный токен
-let token = 'c4f12a39b92b3a9c1b6c74ac5aadc2c6f1c38c90'; // admin
+// let token = 'c4f12a39b92b3a9c1b6c74ac5aadc2c6f1c38c90'; // admin
 
 export const authAPI = {
-    async login (login, password) {
-        return await instance.post('/api-token-auth/', {
-            username: login,
-            password: password
-        })
-        // получаем токен и сохраняем его в куки
-        .then(respones => respones.data.token); 
+    async login (username, password) {
+        console.log(localStorage.getItem('REACT_TOKEN_AUTH'))
+        let token = localStorage.getItem('REACT_TOKEN_AUTH') || null;
+        console.log('token: ' + token)
+        if (!token) {
+            console.log('get-token')
+            return await instance.post('/api-token-auth/', {
+                username: username,
+                password: password,
+            }).then(res => {
+                localStorage.setItem('REACT_TOKEN_AUTH', res.data.token);
+                return res.data.token;
+            })
+        } else {
+            console.log('return-token')
+            return await (async () => {
+                return token
+            })();
+        }
     },
 
     // logout () { }
@@ -30,35 +43,35 @@ export const authAPI = {
 
 
 // токен (авейт вне асинк функции)
-(async () => {
-    console.log('token: ' + await authAPI.login('admin', '12344321aA'));
-})();
+// (async () => {
+//     console.log('token: ' + await authAPI.login('admin', '12344321aA'));
+// })();
 
 
 export const blocksAPI = {
-    getBlocks () {
+    getBlocks (token) {
         return instance.get('/diagram/api/blocks/', {
-                // токен берем из куки
                 headers: {
                     'Authorization': `Token ${token}` 
-            }})
+                }
+               })
             .then(respones => respones.data);
     }
 }
 
 export const filesAPI = {
-    getFiles () {
+    getFiles (token) {
         return instance.get('/diagram/api/files/', {
-                // токен берем из куки
                 headers: {
                     'Authorization': `Token ${token}` 
-            }})
+                }
+            })
             .then(respones => respones.data)
     }
 }
 
 export const sendFileAPI = {
-    sendFile() {
+    sendFile(token) {
         let test_json = {
             user: "admin",
             name: "test-axios",

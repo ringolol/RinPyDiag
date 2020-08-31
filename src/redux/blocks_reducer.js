@@ -1,4 +1,4 @@
-import { blocksAPI, filesAPI } from "../api/api";
+import { blocksAPI, filesAPI, authAPI } from "../api/api";
 
 const GET_BLOCKS = 'blocks/GET_BLOCKS';
 const GET_FILES = 'blocks/GET_FILES';
@@ -52,16 +52,22 @@ export const setText = (text) => ({ type: SET_TEXT, text });
 
 
 export const getBlocksData = () =>  (dispatch) => {
-    const blocks = blocksAPI.getBlocks();
-    const files = filesAPI.getFiles();
+    // ет хня из пропсов должна идти
+    let username = 'admin';
+    let password = '12344321aA';
 
-    Promise.all([blocks, files])
-    .then((resolve) => {
-        dispatch(setBlocks(resolve[0]));
-        dispatch(setFiles(resolve[1]));
-        dispatch(setIsLoaded(true));
+    authAPI.login(username, password).then(token => {
+        console.log(token);
+        const blocks = blocksAPI.getBlocks(token);
+        const files = filesAPI.getFiles(token);
+
+        Promise.all([blocks, files])
+        .then((resolve) => {
+            dispatch(setBlocks(resolve[0]));
+            dispatch(setFiles(resolve[1]));
+            dispatch(setIsLoaded(true));
+        })
     })
-      
 }
 
 export const sendTextForServer = (text) =>  (dispatch) => {
