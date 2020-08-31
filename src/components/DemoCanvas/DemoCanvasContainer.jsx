@@ -4,7 +4,8 @@ import {
             sendFile, 
             setUserName, 
             setPassword,
-            onLogIn } from '../../redux/blocks_reducer';
+            onLogIn,
+            onLogOut } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
 
 import { BodyWidget } from './BodyWidget';
@@ -40,6 +41,10 @@ class DemoCanvasContainer extends React.Component {
     onLogIn = (username, password) => {
         this.props.onLogIn(username, password);
     }
+
+    onLogOut = () => {
+        this.props.onLogOut();
+    }
     
     render() {
         if (!this.props.isLoaded) return <div>Loading</div>
@@ -56,6 +61,7 @@ class DemoCanvasContainer extends React.Component {
             password={ this.props.password }
             setUserName={ this.setUserName }
             setPassword={ this.setPassword }
+            onLogOut={ this.onLogOut }
              /> );
     }
 }
@@ -76,4 +82,5 @@ export default connect(mapStateToProps, {
     setUserName,
     setPassword,
     onLogIn,
+    onLogOut,
 })(DemoCanvasContainer);

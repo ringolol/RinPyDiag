@@ -115,6 +115,12 @@ export const sendFile = (filename, ser) =>  (dispatch) => {
     });
 }
 
+export const onLogOut = () => (dispatch) => {
+    authAPI.logout()
+    dispatch(setBlocks([]));
+    dispatch(setFiles([]));
+}
+
 
 
 export default blocksReducer;

@@ -18,6 +18,7 @@ export interface BodyWidgetProps {
 	setUserName: any;
 	setPassword: any;
 	onLogIn: any;
+	onLogOut: any;
 	username: any;
 	password: any;
 }
@@ -81,8 +82,11 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 	}
 
 	onLogIn = (event: any) => {
-		console.log([this.props.username, this.props.password])
 		this.props.onLogIn(this.props.username, this.props.password);
+	}
+
+	onLogOut = (event: any) => {
+		this.props.onLogOut();
 	}
 	
 	render() {
@@ -115,8 +119,10 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 					<input type='text' value={ this.props.username } onChange={ this.onUserNameChange } />
 					<input type='text' value={ this.props.password } onChange={ this.onPasswordChange } />
 					<button onClick={ this.onLogIn }>Login</button>
+					<button onClick={ this.onLogOut }>Logout</button>
 					<input type='text' value={ this.props.filename } onChange={ this.onTextChange } />
 					<button onClick={ this.onSendFile }>Save File</button>
+					
 				</Header>
 				<Content>
 					<TrayWidget>

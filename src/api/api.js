@@ -42,7 +42,7 @@ export const authAPI = {
         }
     },
 
-    // logout () { }
+    logout () { localStorage.removeItem('REACT_TOKEN_AUTH') }
 };
 
 
