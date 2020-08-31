@@ -1,10 +1,12 @@
 import * as axios from 'axios';
 
-const instance = axios.create({
+const instance = axios.create({  // не забудь поменять и снизу
     // withCredentials: true,
-    // baseURL: 'http://31.134.153.18/',
-    baseURL: 'http://127.0.0.1:8000/',
+    baseURL: 'http://31.134.153.18/',  
+    // baseURL: 'http://127.0.0.1:8000/',
 });
+const baseURL = 'http://31.134.153.18/';
+// const baseURL = 'http://127.0.0.1:8000/';
 
 
 // http POST http://31.134.153.18/api-token-auth/ username="admin" password="12344321aA"
@@ -44,27 +46,27 @@ export const authAPI = {
 };
 
 
-export const blocksAPI = {
-    getBlocks (token) {
-        return  instance.get('/diagram/api/blocks/', {
-            headers: {
-                'Authorization': `Token ${token}` 
-            }
-        })
-        .then(respones => respones.data);
-    }
-}
+// export const blocksAPI = {
+//     getBlocks (token) {
+//         return  instance.get('/diagram/api/blocks/', {
+//             headers: {
+//                 'Authorization': `Token ${token}` 
+//             }
+//         })
+//         .then(respones => respones.data);
+//     }
+// }
 
-export const filesAPI = {
-    getFiles (token) {
-        return instance.get('/diagram/api/files/', {
-            headers: {
-                'Authorization': `Token ${token}` 
-            }
-        })
-        .then(respones => respones.data);
-    }
-}
+// export const filesAPI = {
+//     getFiles (token) {
+//         return instance.get('/diagram/api/files/', {
+//             headers: {
+//                 'Authorization': `Token ${token}` 
+//             }
+//         })
+//         .then(respones => respones.data);
+//     }
+// }
 
 export const sendFileAPI = {
     sendFile(token, json) {
@@ -76,5 +78,36 @@ export const sendFileAPI = {
             }
         })
         .then(respones =>console.log(respones))
+    }
+}
+
+
+export const blocksAPI = {
+    async getBlocks (token) {
+        try {
+            const response = await axios.get(`${baseURL}diagram/api/blocks/`, {
+                headers: {
+                    'Authorization': `Token ${token}` 
+                }
+            });
+            return response.data
+        } catch (error) {
+            console.error(error);
+        }
+    }
+}
+
+export const filesAPI = {
+    async getFiles (token) {
+        try {
+            const response = await axios.get(`${baseURL}diagram/api/files/`, {
+                headers: {
+                    'Authorization': `Token ${token}` 
+                }
+            })
+            return response.data;
+        } catch (error) {
+            console.error(error);
+        }
     }
 }
