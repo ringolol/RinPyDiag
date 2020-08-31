@@ -77,7 +77,6 @@ export const sendFileAPI = {
                 'Content-Type': 'application/json'
             }
         })
-        .then(respones =>console.log(respones))
     }
 }
 

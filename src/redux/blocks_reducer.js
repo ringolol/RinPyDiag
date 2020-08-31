@@ -2,6 +2,7 @@ import { blocksAPI, filesAPI, authAPI, sendFileAPI } from "../api/api";
 
 const GET_BLOCKS = 'blocks/GET_BLOCKS';
 const GET_FILES = 'blocks/GET_FILES';
+const SET_FILE = 'blocks/SET_FILE';
 const IS_LOADED = 'blocks/IS_LOADED';
 const SET_TEXT = 'blocks/SET_TEXT';
 const SET_USERNAME = 'blocks/SET_USERNAME';
@@ -27,6 +28,12 @@ const blocksReducer = (state = initialState, action) => {
             return {
                 ...state,
                 files: [...action.files],
+            }
+        }
+        case SET_FILE: {
+            return {
+                ...state,
+                files: [...state.files, action.file],
             }
         }
         case IS_LOADED: {
@@ -60,6 +67,7 @@ const blocksReducer = (state = initialState, action) => {
 
 export const setBlocks = (blocks) => ({ type: GET_BLOCKS, blocks });
 export const setFiles = (files) => ({ type: GET_FILES, files });
+export const setFile = (file) => ({ type: SET_FILE, file });
 export const setIsLoaded = (isLoaded) => ({ type: IS_LOADED, isLoaded });
 export const setText = (text) => ({ type: SET_TEXT, text });
 export const setUserName = (username) => ({ type: SET_USERNAME, username });
@@ -99,7 +107,12 @@ export const sendFile = (filename, ser) =>  (dispatch) => {
         name: filename,
         ser: ser
     }
-    sendFileAPI.sendFile(token, json);
+    sendFileAPI.sendFile(token, json).then(response => {
+        console.log(response.data);
+        if (response.status === 201) {
+            dispatch(setFile(response.data));
+        }
+    });
 }
 
 

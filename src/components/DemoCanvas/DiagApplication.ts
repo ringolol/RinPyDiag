@@ -49,4 +49,9 @@ export class DiagApplication {
 	public getSerialized() {
 		return this.activeModel.serialize();
 	}
+
+	public deserialize(ser: any) {
+		this.activeModel.deserializeModel(ser, this.diagramEngine);
+		this.diagramEngine.setModel(this.activeModel);
+	}
 }

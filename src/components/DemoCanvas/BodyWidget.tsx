@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { TrayWidget } from './TrayWidget';
 import { DiagApplication } from './DiagApplication';
-import { TrayItemWidget } from './TrayItemWidget';
+import { TrayItemWidget, TrayItemWidget2 } from './TrayItemWidget';
 import { DefaultNodeModel } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { DemoCanvasWidget } from './DemoCanvasWidget';
@@ -66,6 +66,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 	}
 
 	onSendFile = (event: any) => {
+		console.log(this.props.app.getSerialized());
 		this.props.sendFile(this.props.filename, this.props.app.getSerialized());
 	}
 
@@ -92,6 +93,17 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 					key={ block.name } 
 					model={{ block: block }} 
 					name={ block.name } 
+					color="rgb(150,150,150)" />
+			)
+		})
+
+		const files = this.props.files.map((file: any) => {
+			return (
+				<TrayItemWidget2
+					key={ file.name } 
+					ser={ file.ser } 
+					name={ file.name }
+					app={ this.props.app }
 					color="rgb(150,150,150)" />
 			)
 		})
@@ -133,6 +145,9 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 							<CanvasWidget engine={this.props.app.getDiagramEngine()} />
 						</DemoCanvasWidget>
 					</Layer>
+					<TrayWidget>
+						{ files }
+					</TrayWidget>
 				</Content>
 			</Body>
 		);
