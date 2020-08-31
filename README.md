@@ -28,6 +28,19 @@
 
 Заголовок: ```{}```
 
+Пример ответ:
+```js
+{
+    ...
+    data: {
+        ...
+        token: krakoziabra777,
+        ...
+    },
+    ...
+}
+```
+
 ## /diagram/api/blocks/
 
 ### GET
@@ -40,6 +53,30 @@
 {
     'Authorization': `Token ${token}`
 }
+```
+
+Пример ответ:
+```js
+[
+    {
+        "name": "const",
+        "inpN": 0,
+        "outpN": 1,
+        "pars": {
+            "val": 1
+        },
+        "states": {}
+    },
+    {
+        "name": "integ",
+        "inpN": 1,
+        "outpN": 1,
+        "pars": {},
+        "states": {
+            "0": 0
+        }
+    }
+]
 ```
 
 ## /diagram/api/files/
@@ -55,6 +92,22 @@
 {
     'Authorization': `Token ${token}`
 }
+```
+
+Пример ответ:
+```js
+[
+    {
+        "user": "username",
+        "name": "diag-name1",
+        "ser": { ... }
+    },
+    {
+        "user": "username",
+        "name": "diag-name2",
+        "ser": { ... }
+    }
+]
 ```
 
 ### POST
@@ -80,4 +133,9 @@
     'Authorization': `Token ${token}`,
     'Content-Type': 'application/json'
 }
+```
+
+Пример ответа:
+```js
+???
 ```
