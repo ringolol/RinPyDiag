@@ -1,10 +1,12 @@
 import * as axios from 'axios';
 
-const instance = axios.create({
+const instance = axios.create({  // не забудь поменять и снизу
     // withCredentials: true,
-    // baseURL: 'http://31.134.153.18/',
+    // baseURL: 'http://31.134.153.18/',  
     baseURL: 'http://127.0.0.1:8000/',
 });
+// const baseURL = 'http://31.134.153.18/';
+const baseURL = 'http://127.0.0.1:8000/';
 
 const token = 'c4f12a39b92b3a9c1b6c74ac5aadc2c6f1c38c90';
 const headers = {
@@ -19,7 +21,6 @@ const headers = {
 //      "Authorization: Token 91196468bb41ed23779bbc6ddd33de9ed07ffd56" 
 //      name="test" user="http://127.0.0.1:8000/api/users/3/" ser="{}"
 
-<<<<<<< Updated upstream
 
 // временный токен
 // let token = 'c4f12a39b92b3a9c1b6c74ac5aadc2c6f1c38c90'; // admin
@@ -49,16 +50,6 @@ export const authAPI = {
     },
 
     // logout () { }
-=======
-export const authAPI = {
-    async login (login, password) {
-        return await instance.post('/api-token-auth/', {
-            username: login,
-            password: password
-        })
-        .then(respones => respones.data.token); 
-    }
->>>>>>> Stashed changes
 };
 
 
@@ -69,44 +60,24 @@ export const authAPI = {
 
 
 export const blocksAPI = {
-<<<<<<< Updated upstream
-    getBlocks (token) {
-        return instance.get('/diagram/api/blocks/', {
-                headers: {
-                    'Authorization': `Token ${token}` 
-                }
-               })
-            .then(respones => respones.data);
-=======
     async getBlocks () {
         try {
-            const response = await axios.get('http://31.134.153.18/diagram/api/blocks/', headers);
+            const response = await axios.get(`${baseURL}diagram/api/blocks/`, headers);
             return response.data;
         } catch (error) {
             console.error(error);
         }
->>>>>>> Stashed changes
     }
 }
 
 export const filesAPI = {
-<<<<<<< Updated upstream
-    getFiles (token) {
-        return instance.get('/diagram/api/files/', {
-                headers: {
-                    'Authorization': `Token ${token}` 
-                }
-            })
-            .then(respones => respones.data)
-=======
     async getFiles () {
         try {
-            const response = await axios.get('http://31.134.153.18/diagram/api/files/', headers);
+            const response = await axios.get(`${baseURL}diagram/api/files/`, headers);
             return response.data;
         } catch (error) {
             console.error(error);
         }
->>>>>>> Stashed changes
     }
 }
 
