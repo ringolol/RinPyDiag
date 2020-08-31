@@ -6,21 +6,19 @@ const instance = axios.create({
     baseURL: 'http://127.0.0.1:8000/',
 });
 
+
 // http POST http://31.134.153.18/api-token-auth/ username="admin" password="12344321aA"
 // http http://127.0.0.1:8000/diagram/api/files/ "Authorization: Token daa965d9ca1b219509903733b6af8ee4d5f97d33"
 // http --json POST http://127.0.0.1:8000/diagram/api/files/ 
 //      "Authorization: Token 91196468bb41ed23779bbc6ddd33de9ed07ffd56" 
 //      name="test" user="http://127.0.0.1:8000/api/users/3/" ser="{}"
 
-
-// временный токен
-// let token = 'c4f12a39b92b3a9c1b6c74ac5aadc2c6f1c38c90'; // admin
-
 export const authAPI = {
     async login (username, password) {
-        console.log(localStorage.getItem('REACT_TOKEN_AUTH'))
         let token = localStorage.getItem('REACT_TOKEN_AUTH') || null;
-        console.log('token: ' + token)
+
+        // если нет токена, но есть юзернейм и пасс
+        // посылаем запрос на логирование
         if (!token && username && password) {
             console.log('get-token')
             return await instance.post('/api-token-auth/', {
@@ -30,11 +28,13 @@ export const authAPI = {
                 localStorage.setItem('REACT_TOKEN_AUTH', res.data.token);
                 return res.data.token;
             })
+        // если есть токен уже есть, то отдаем его
         } else if (token) {
             console.log('return-token')
             return await (async () => {
                 return token
             })();
+        // иначе ниче не делаем
         } else {
             return;
         }
@@ -44,42 +44,31 @@ export const authAPI = {
 };
 
 
-// токен (авейт вне асинк функции)
-// (async () => {
-//     console.log('token: ' + await authAPI.login('admin', '12344321aA'));
-// })();
-
-
 export const blocksAPI = {
     getBlocks (token) {
-        return instance.get('/diagram/api/blocks/', {
-                headers: {
-                    'Authorization': `Token ${token}` 
-                }
-               })
-            .then(respones => respones.data);
+        return  instance.get('/diagram/api/blocks/', {
+            headers: {
+                'Authorization': `Token ${token}` 
+            }
+        })
+        .then(respones => respones.data);
     }
 }
 
 export const filesAPI = {
     getFiles (token) {
         return instance.get('/diagram/api/files/', {
-                headers: {
-                    'Authorization': `Token ${token}` 
-                }
-            })
-            .then(respones => respones.data)
+            headers: {
+                'Authorization': `Token ${token}` 
+            }
+        })
+        .then(respones => respones.data);
     }
 }
 
 export const sendFileAPI = {
-    sendFile(token) {
-        let test_json = {
-            user: "admin",
-            name: "test-axios",
-            ser: {}
-        }
-        return instance.post('/diagram/api/files/', test_json, {
+    sendFile(token, json) {
+        return instance.post('/diagram/api/files/', json, {
             // токен из куков
             headers: {
                 'Authorization': `Token ${token}`,
@@ -89,6 +78,3 @@ export const sendFileAPI = {
         .then(respones =>console.log(respones))
     }
 }
-
-// посылаем файл на серв
-// sendFileAPI.sendFile()

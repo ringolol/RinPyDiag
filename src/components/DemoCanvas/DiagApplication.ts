@@ -45,4 +45,8 @@ export class DiagApplication {
 	public getDiagramEngine(): SRD.DiagramEngine {
 		return this.diagramEngine;
 	}
+
+	public getSerialized() {
+		return this.activeModel.serialize();
+	}
 }

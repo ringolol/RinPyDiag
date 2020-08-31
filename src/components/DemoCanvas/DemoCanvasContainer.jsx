@@ -1,8 +1,7 @@
 import React, { useEffect } from 'react';
 import {    
-            getBlocksData, 
             setText, 
-            sendTextForServer, 
+            sendFile, 
             setUserName, 
             setPassword,
             onLogIn } from '../../redux/blocks_reducer';
@@ -19,15 +18,15 @@ class DemoCanvasContainer extends React.Component {
     }
 
     componentDidMount() {
-        this.props.getBlocksData();
+        this.props.onLogIn();
     }
 
     setText = (text) => {
         this.props.setText(text);
     }
 
-    sendTextForServer = (text) => {
-        this.props.sendTextForServer(text);
+    sendFile = (filename, ser) => {
+        this.props.sendFile(filename, ser);
     }
 
     setUserName = (username) => {
@@ -49,9 +48,9 @@ class DemoCanvasContainer extends React.Component {
             app={ this.app }
             blocks={ this.props.blocks }
             files={ this.props.files }
-            text={ this.props.text }
+            filename={ this.props.text }
             setText={ this.setText }
-            sendTextForServer={ this.sendTextForServer }
+            sendFile={ this.sendFile }
             onLogIn={ this.onLogIn }
             username={ this.props.username }
             password={ this.props.password }
@@ -72,9 +71,8 @@ const mapStateToProps = (state) => ({
 
 
 export default connect(mapStateToProps, {
-    getBlocksData,
     setText, 
-    sendTextForServer,
+    sendFile,
     setUserName,
     setPassword,
     onLogIn,

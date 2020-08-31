@@ -1,4 +1,4 @@
-import { blocksAPI, filesAPI, authAPI } from "../api/api";
+import { blocksAPI, filesAPI, authAPI, sendFileAPI } from "../api/api";
 
 const GET_BLOCKS = 'blocks/GET_BLOCKS';
 const GET_FILES = 'blocks/GET_FILES';
@@ -6,7 +6,6 @@ const IS_LOADED = 'blocks/IS_LOADED';
 const SET_TEXT = 'blocks/SET_TEXT';
 const SET_USERNAME = 'blocks/SET_USERNAME';
 const SET_PASSWORD = 'blocks/SET_PASSWORD';
-const LOG_IN = 'blocks/LOG_IN';
 
 let initialState = {
     blocks: [],
@@ -54,11 +53,6 @@ const blocksReducer = (state = initialState, action) => {
                 password: action.password,
             }
         }
-        case LOG_IN: {
-            return {
-                ...state,
-            }
-        }
         default:
             return state;
     }  
@@ -70,19 +64,13 @@ export const setIsLoaded = (isLoaded) => ({ type: IS_LOADED, isLoaded });
 export const setText = (text) => ({ type: SET_TEXT, text });
 export const setUserName = (username) => ({ type: SET_USERNAME, username });
 export const setPassword = (password) => ({ type: SET_PASSWORD, password });
-// export const onLogIn = () => ({type: LOG_IN});
-
 
 export const onLogIn = (username, password) =>  (dispatch) => {
-    authAPI.login(username, password).then(token => {
-        console.log(token);
-        loadContent(token, dispatch);
-    })
-}
-
-export const getBlocksData = () =>  (dispatch) => {
+    // отрисовываем логин форму и тп
     dispatch(setIsLoaded(true));
-    authAPI.login('', '').then(token => {
+
+    // логин по имени пользователя и паролю
+    authAPI.login(username, password).then(token => {
         console.log(token);
         loadContent(token, dispatch);
     })
@@ -104,19 +92,14 @@ const loadContent = (token, dispatch) => {
     })
 }
 
-export const sendTextForServer = (text) =>  (dispatch) => {
-
-    const asynchrone = new Promise((resolve, reject) => {
-        setTimeout(() =>{
-            console.log(`Send to server: ${text}`);
-            resolve(true)
-        }, 1000)
-    })
-
-    asynchrone.then(() => {
-        alert(text);
-    })
-      
+export const sendFile = (filename, ser) =>  (dispatch) => {
+    let token = localStorage.getItem('REACT_TOKEN_AUTH') || null;
+    let json = {
+        user: "admin",
+        name: filename,
+        ser: ser
+    }
+    sendFileAPI.sendFile(token, json);
 }
 
 
