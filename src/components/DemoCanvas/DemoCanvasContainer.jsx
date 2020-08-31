@@ -14,7 +14,7 @@ import { DiagApplication } from './DiagApplication';
 class DemoCanvasContainer extends React.Component {
     constructor(props) {
         super(props);  // Просто прокидывание пропсов из редакс. 
-        // Ваще оно так по умолчанию делаеться, просто тут надо было открывать конструктор.
+        // Ваще оно так по умолчанию делается, просто тут надо было открывать конструктор.
         this.app = new DiagApplication();
     }
 

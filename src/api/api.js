@@ -1,19 +1,13 @@
 import * as axios from 'axios';
 
-const instance = axios.create({  // не забудь поменять и снизу
-    // withCredentials: true,
-    baseURL: 'http://31.134.153.18/',  
-    // baseURL: 'http://127.0.0.1:8000/',
-});
+
 const baseURL = 'http://31.134.153.18/';
 // const baseURL = 'http://127.0.0.1:8000/';
 
+const instance = axios.create({ 
+    baseURL: baseURL,
+});
 
-// http POST http://31.134.153.18/api-token-auth/ username="admin" password="12344321aA"
-// http http://127.0.0.1:8000/diagram/api/files/ "Authorization: Token daa965d9ca1b219509903733b6af8ee4d5f97d33"
-// http --json POST http://127.0.0.1:8000/diagram/api/files/ 
-//      "Authorization: Token 91196468bb41ed23779bbc6ddd33de9ed07ffd56" 
-//      name="test" user="http://127.0.0.1:8000/api/users/3/" ser="{}"
 
 export const authAPI = {
     async login (username, password) {
@@ -46,32 +40,9 @@ export const authAPI = {
 };
 
 
-// export const blocksAPI = {
-//     getBlocks (token) {
-//         return  instance.get('/diagram/api/blocks/', {
-//             headers: {
-//                 'Authorization': `Token ${token}` 
-//             }
-//         })
-//         .then(respones => respones.data);
-//     }
-// }
-
-// export const filesAPI = {
-//     getFiles (token) {
-//         return instance.get('/diagram/api/files/', {
-//             headers: {
-//                 'Authorization': `Token ${token}` 
-//             }
-//         })
-//         .then(respones => respones.data);
-//     }
-// }
-
 export const sendFileAPI = {
     sendFile(token, json) {
         return instance.post('/diagram/api/files/', json, {
-            // токен из куков
             headers: {
                 'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json'
@@ -95,6 +66,7 @@ export const blocksAPI = {
         }
     }
 }
+
 
 export const filesAPI = {
     async getFiles (token) {

@@ -7,7 +7,7 @@ export interface TrayItemWidgetProps {
 	name: string;
 }
 
-export interface TrayItemWidgetProps2 {
+export interface FileExplorerWidgetProps {
 	ser: any;
 	color?: string;
 	name: string;
@@ -43,15 +43,11 @@ export class TrayItemWidget extends React.Component<TrayItemWidgetProps> {
 	}
 }
 
-export class TrayItemWidget2 extends React.Component<TrayItemWidgetProps2> {
+export class FileExplorer extends React.Component<FileExplorerWidgetProps> {
 	render() {
 		return (
 			<Tray
 				color={ this.props.color || 'gray' }
-				// draggable={true}
-				// onDragStart={(event) => {
-				// 	event.dataTransfer.setData('storm-diagram-node', JSON.stringify(this.props.model));
-				// }}
 				onClick={() => { this.props.app.deserialize(this.props.ser) }}
 				className="tray-item">
 				{this.props.name}

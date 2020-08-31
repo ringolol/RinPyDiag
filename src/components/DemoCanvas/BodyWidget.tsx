@@ -2,7 +2,7 @@ import * as React from 'react';
 import * as _ from 'lodash';
 import { TrayWidget } from './TrayWidget';
 import { DiagApplication } from './DiagApplication';
-import { TrayItemWidget, TrayItemWidget2 } from './TrayItemWidget';
+import { TrayItemWidget, FileExplorer } from './TrayItemWidget';
 import { DefaultNodeModel } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { DemoCanvasWidget } from './DemoCanvasWidget';
@@ -51,6 +51,12 @@ export const Layer = styled.div`
 	flex-grow: 1;
 `;
 
+const Title = styled.div`
+	color: white;
+	font-family: Helvetica, Arial;
+	padding: 10px;
+`;
+
 export class BodyWidget extends React.Component<BodyWidgetProps> {
 	
 	constructor(props: any) {
@@ -90,7 +96,6 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 	}
 	
 	render() {
-		// эти блоки мы берем с серва ( api: /diagram/api/blocks )
 		const blocks = this.props.blocks.map((block: any) => {
 			return (
 				<TrayItemWidget 
@@ -103,7 +108,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 
 		const files = this.props.files.map((file: any) => {
 			return (
-				<TrayItemWidget2
+				<FileExplorer
 					key={ file.name } 
 					ser={ file.ser } 
 					name={ file.name }
@@ -122,10 +127,10 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 					<button onClick={ this.onLogOut }>Logout</button>
 					<input type='text' value={ this.props.filename } onChange={ this.onTextChange } />
 					<button onClick={ this.onSendFile }>Save File</button>
-					
 				</Header>
 				<Content>
 					<TrayWidget>
+						<Title> Blocks:</Title>
 						{ blocks }
 					</TrayWidget>
 					<Layer
@@ -152,6 +157,7 @@ export class BodyWidget extends React.Component<BodyWidgetProps> {
 						</DemoCanvasWidget>
 					</Layer>
 					<TrayWidget>
+						<Title>Files:</Title>
 						{ files }
 					</TrayWidget>
 				</Content>
