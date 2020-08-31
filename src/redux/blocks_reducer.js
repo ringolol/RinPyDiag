@@ -76,22 +76,32 @@ export const setPassword = (password) => ({ type: SET_PASSWORD, password });
 export const onLogIn = (username, password) =>  (dispatch) => {
     authAPI.login(username, password).then(token => {
         console.log(token);
-        const blocks = blocksAPI.getBlocks(token);
-        const files = filesAPI.getFiles(token);
-
-        Promise.all([blocks, files])
-        .then((resolve) => {
-            dispatch(setBlocks(resolve[0]));
-            dispatch(setFiles(resolve[1]));
-            dispatch(setIsLoaded(true));
-        })
+        loadContent(token, dispatch);
     })
 }
 
 export const getBlocksData = () =>  (dispatch) => {
     dispatch(setIsLoaded(true));
-    // ет хня из пропсов должна идти
+    authAPI.login('', '').then(token => {
+        console.log(token);
+        loadContent(token, dispatch);
+    })
+}
+
+const loadContent = (token, dispatch) => {
+    if(!token) {
+        return;
+    }
     
+    const blocks = blocksAPI.getBlocks(token);
+    const files = filesAPI.getFiles(token);
+
+    Promise.all([blocks, files])
+    .then(resolve => {
+        dispatch(setBlocks(resolve[0]));
+        dispatch(setFiles(resolve[1]));
+        dispatch(setIsLoaded(true));
+    })
 }
 
 export const sendTextForServer = (text) =>  (dispatch) => {

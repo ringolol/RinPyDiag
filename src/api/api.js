@@ -21,7 +21,7 @@ export const authAPI = {
         console.log(localStorage.getItem('REACT_TOKEN_AUTH'))
         let token = localStorage.getItem('REACT_TOKEN_AUTH') || null;
         console.log('token: ' + token)
-        if (!token) {
+        if (!token && username && password) {
             console.log('get-token')
             return await instance.post('/api-token-auth/', {
                 username: username,
@@ -30,11 +30,13 @@ export const authAPI = {
                 localStorage.setItem('REACT_TOKEN_AUTH', res.data.token);
                 return res.data.token;
             })
-        } else {
+        } else if (token) {
             console.log('return-token')
             return await (async () => {
                 return token
             })();
+        } else {
+            return;
         }
     },
 
