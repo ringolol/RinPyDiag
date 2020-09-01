@@ -23,7 +23,21 @@ export const authAPI = {
             }).then(res => {
                 localStorage.setItem('REACT_TOKEN_AUTH', res.data.token);
                 return res.data.token;
-            })
+            }).catch(function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                return null
+            });
         // если есть токен уже есть, то отдаем его
         } else if (token) {
             console.log('return-token')
@@ -39,7 +53,6 @@ export const authAPI = {
     logout () { localStorage.removeItem('REACT_TOKEN_AUTH') }
 };
 
-
 export const sendFileAPI = {
     sendFile(token, json) {
         return instance.post('/diagram/api/files/', json, {
@@ -47,7 +60,21 @@ export const sendFileAPI = {
                 'Authorization': `Token ${token}`,
                 'Content-Type': 'application/json'
             }
-        })
+        }).catch(function (error) {
+            if (error.response) {
+                // Request made and server responded
+                console.log(error.response.data);
+                console.log(error.response.status);
+                console.log(error.response.headers);
+            } else if (error.request) {
+                // The request was made but no response was received
+                console.log(error.request);
+            } else {
+                // Something happened in setting up the request that triggered an Error
+                console.log('Error', error.message);
+            }
+            return null
+        });
     }
 }
 
@@ -59,8 +86,22 @@ export const blocksAPI = {
                 headers: {
                     'Authorization': `Token ${token}` 
                 }
+            }).catch(function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                return null
             });
-            return response.data
+            return response
         } catch (error) {
             console.error(error);
         }
@@ -75,8 +116,22 @@ export const filesAPI = {
                 headers: {
                     'Authorization': `Token ${token}` 
                 }
-            })
-            return response.data;
+            }).catch(function (error) {
+                if (error.response) {
+                    // Request made and server responded
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                return null
+            });
+            return response;
         } catch (error) {
             console.error(error);
         }

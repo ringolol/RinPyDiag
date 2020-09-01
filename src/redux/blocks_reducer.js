@@ -94,8 +94,13 @@ const loadContent = (token, dispatch) => {
 
     Promise.all([blocks, files])
     .then(resolve => {
-        dispatch(setBlocks(resolve[0]));
-        dispatch(setFiles(resolve[1]));
+        console.log(resolve);
+        if(resolve[0] && resolve[0].status === 200) {
+            dispatch(setBlocks(resolve[0].data));
+        }
+        if(resolve[1] && resolve[1].status === 200) {
+            dispatch(setFiles(resolve[1].data));
+        }
         dispatch(setIsLoaded(true));
     })
 }
@@ -108,8 +113,7 @@ export const sendFile = (filename, ser) =>  (dispatch) => {
         ser: ser
     }
     sendFileAPI.sendFile(token, json).then(response => {
-        console.log(response.data);
-        if (response.status === 201) {
+        if (response && response.status === 201) {
             dispatch(setFile(response.data));
         }
     });
