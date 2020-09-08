@@ -8,6 +8,20 @@ const instance = axios.create({
     baseURL: baseURL,
 });
 
+const errorsLog = (error) => {
+    if(error.response) { 
+        // Request made and server responded
+        console.log(error.response.data, error.response.status, error.response.headers);
+    } else if (error.request) {
+        // The request was made but no response was received
+        console.log(error.request);
+    } else {
+        // Something happened in setting up the request that triggered an Error
+        console.log('Error', error.message);
+    }
+    return null;
+}
+
 
 export const authAPI = {
     async login (username, password) {
@@ -24,19 +38,7 @@ export const authAPI = {
                 localStorage.setItem('REACT_TOKEN_AUTH', res.data.token);
                 return res.data.token;
             }).catch(function (error) {
-                if (error.response) {
-                    // Request made and server responded
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-                return null
+                return errorsLog(error);
             });
         // если есть токен уже есть, то отдаем его
         } else if (token) {
@@ -61,19 +63,7 @@ export const sendFileAPI = {
                 'Content-Type': 'application/json'
             }
         }).catch(function (error) {
-            if (error.response) {
-                // Request made and server responded
-                console.log(error.response.data);
-                console.log(error.response.status);
-                console.log(error.response.headers);
-            } else if (error.request) {
-                // The request was made but no response was received
-                console.log(error.request);
-            } else {
-                // Something happened in setting up the request that triggered an Error
-                console.log('Error', error.message);
-            }
-            return null
+            return errorsLog(error);
         });
     }
 }
@@ -87,19 +77,7 @@ export const blocksAPI = {
                     'Authorization': `Token ${token}` 
                 }
             }).catch(function (error) {
-                if (error.response) {
-                    // Request made and server responded
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-                return null
+                return errorsLog(error);
             });
             return response
         } catch (error) {
@@ -117,19 +95,7 @@ export const filesAPI = {
                     'Authorization': `Token ${token}` 
                 }
             }).catch(function (error) {
-                if (error.response) {
-                    // Request made and server responded
-                    console.log(error.response.data);
-                    console.log(error.response.status);
-                    console.log(error.response.headers);
-                } else if (error.request) {
-                    // The request was made but no response was received
-                    console.log(error.request);
-                } else {
-                    // Something happened in setting up the request that triggered an Error
-                    console.log('Error', error.message);
-                }
-                return null
+                return errorsLog(error);
             });
             return response;
         } catch (error) {
