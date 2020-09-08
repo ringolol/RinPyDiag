@@ -107,8 +107,9 @@ const loadContent = (token, dispatch) => {
 
 export const sendFile = (filename, ser) =>  (dispatch) => {
     let token = localStorage.getItem('REACT_TOKEN_AUTH') || null;
+    let username = localStorage.getItem('REACT_USERNAME') || null;
     let json = {
-        user: "admin",
+        user: username,
         name: filename,
         ser: ser
     }

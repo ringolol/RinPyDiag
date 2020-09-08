@@ -36,6 +36,7 @@ export const authAPI = {
                 password: password,
             }).then(res => {
                 localStorage.setItem('REACT_TOKEN_AUTH', res.data.token);
+                localStorage.setItem('REACT_USERNAME', username);
                 return res.data.token;
             }).catch(function (error) {
                 return errorsLog(error);
@@ -52,7 +53,10 @@ export const authAPI = {
         }
     },
 
-    logout () { localStorage.removeItem('REACT_TOKEN_AUTH') }
+    logout () { 
+        localStorage.removeItem('REACT_TOKEN_AUTH');
+        localStorage.removeItem('REACT_USERNAME')
+    }
 };
 
 export const sendFileAPI = {
