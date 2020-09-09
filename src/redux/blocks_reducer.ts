@@ -1,21 +1,27 @@
 import { blocksAPI, filesAPI, authAPI, sendFileAPI } from "../api/api";
+import { BloksType, FilesType } from "../types/types";
 
 const GET_BLOCKS = 'blocks/GET_BLOCKS';
 const GET_FILES = 'blocks/GET_FILES';
 const SET_FILE = 'blocks/SET_FILE';
 const IS_LOADED = 'blocks/IS_LOADED';
-const SET_TEXT = 'blocks/SET_TEXT';
+const SET_FILE_NAME = 'blocks/SET_TEXT';
 const SET_USERNAME = 'blocks/SET_USERNAME';
 const SET_PASSWORD = 'blocks/SET_PASSWORD';
 
+
 let initialState = {
-    blocks: [],
-    files: [],
-    isLoaded: false,
-    text: ''
+    blocks: [] as Array<BloksType>,
+    files: [] as Array<FilesType>,
+    isLoaded: false as boolean,
+    filename: '' as string,
+    username: '' as string,
+    password: '' as string
 };
 
-const blocksReducer = (state = initialState, action) => {
+export type InitialStateType = typeof initialState;
+
+const blocksReducer = (state = initialState, action: any): InitialStateType => {
 
     switch (action.type) {
         case GET_BLOCKS: {
@@ -42,10 +48,10 @@ const blocksReducer = (state = initialState, action) => {
                 isLoaded: action.isLoaded,
             }
         }
-        case SET_TEXT: {
+        case SET_FILE_NAME: {
             return {
                 ...state,
-                text: action.text,
+                filename: action.filename,
             }
         }
         case SET_USERNAME: {
@@ -65,15 +71,44 @@ const blocksReducer = (state = initialState, action) => {
     }  
 }
 
-export const setBlocks = (blocks) => ({ type: GET_BLOCKS, blocks });
-export const setFiles = (files) => ({ type: GET_FILES, files });
-export const setFile = (file) => ({ type: SET_FILE, file });
-export const setIsLoaded = (isLoaded) => ({ type: IS_LOADED, isLoaded });
-export const setText = (text) => ({ type: SET_TEXT, text });
-export const setUserName = (username) => ({ type: SET_USERNAME, username });
-export const setPassword = (password) => ({ type: SET_PASSWORD, password });
+type SetBlocksActionType = {
+    type: typeof GET_BLOCKS
+    blocks: Array<BloksType>
+}
+export const setBlocks = (blocks: Array<BloksType>): SetBlocksActionType => ({ type: GET_BLOCKS, blocks });
+type SetFilesActionType = {
+    type: typeof GET_FILES
+    files: Array<FilesType>
+}
+export const setFiles = (files: Array<FilesType>): SetFilesActionType => ({ type: GET_FILES, files });
+type SetFileActionType = {
+    type: typeof SET_FILE
+    file: FilesType
+}
+export const setFile = (file: FilesType): SetFileActionType => ({ type: SET_FILE, file });
+type SetIsLoadedActionType = {
+    type: typeof IS_LOADED
+    isLoaded: boolean
+}
+export const setIsLoaded = (isLoaded: boolean): SetIsLoadedActionType => ({ type: IS_LOADED, isLoaded });
+export type SetFileNameActionType = {
+    type: typeof SET_FILE_NAME
+    filename: string
+}
+export const setFileName = (filename: string): SetFileNameActionType => ({ type: SET_FILE_NAME, filename });
+export type SetUserNameActionType = {
+    type: typeof SET_USERNAME
+    username: string
+}
+export const setUserName = (username: string): SetUserNameActionType => ({ type: SET_USERNAME, username });
+export type SetPasswordActionType = {
+    type: typeof SET_PASSWORD
+    password: string
+}
+export const setPassword = (password: string): SetPasswordActionType => ({ type: SET_PASSWORD, password });
 
-export const onLogIn = (username, password) =>  (dispatch) => {
+
+export const onLogIn = (username: string, password: string) =>  (dispatch: any) => {
     // отрисовываем логин форму и тп
     dispatch(setIsLoaded(true));
 
@@ -84,7 +119,7 @@ export const onLogIn = (username, password) =>  (dispatch) => {
     })
 }
 
-const loadContent = (token, dispatch) => {
+const loadContent = (token: string, dispatch: any) => {
     if(!token) {
         return;
     }
@@ -105,7 +140,7 @@ const loadContent = (token, dispatch) => {
     })
 }
 
-export const sendFile = (filename, ser) =>  (dispatch) => {
+export const sendFile = (filename: string, ser: string) => async (dispatch: any) => {
     let token = localStorage.getItem('REACT_TOKEN_AUTH') || null;
     let username = localStorage.getItem('REACT_USERNAME') || null;
     let json = {
@@ -113,14 +148,14 @@ export const sendFile = (filename, ser) =>  (dispatch) => {
         name: filename,
         ser: ser
     }
-    sendFileAPI.sendFile(token, json).then(response => {
-        if (response && response.status === 201) {
-            dispatch(setFile(response.data));
-        }
-    });
+
+    const response = await sendFileAPI.sendFile(token, json);
+    if (response && response.status === 201) {
+        dispatch(setFile(response.data));
+    }
 }
 
-export const onLogOut = () => (dispatch) => {
+export const onLogOut = () => (dispatch: any) => {
     authAPI.logout()
     dispatch(setBlocks([]));
     dispatch(setFiles([]));
