@@ -1,4 +1,4 @@
-import blocksReducer, { setBlocks, setFiles, setIsLoaded, setText } from "./blocks_reducer";
+import blocksReducer, { setBlocks, setFiles, setIsLoaded, setFileName } from "./blocks_reducer";
 
 // Test state
 let state = {
@@ -59,19 +59,19 @@ describe('Actions into blocks_reducer', () => {
         });
     })
     describe('setText: ', () => {
-        const setTextAction = (text) => blocksReducer(state, setText(text));
+        const setTextAction = (text) => blocksReducer(state, setFileName(text));
 
         test('Length of the text should increase', () => {
-            expect(setTextAction('Hello friend').text.length).toBeGreaterThan(10);
+            expect(setTextAction('Hello friend').filename.length).toBeGreaterThan(10);
         });
         test('Text data type should be a "String"', () => {
-            expect(typeof setTextAction('That is string').text).toBe('string');
+            expect(typeof setTextAction('That is string').filename).toBe('string');
         });
         test('Text value should be defined', () => {
-            expect(setTextAction('React').text).toBeDefined();
+            expect(setTextAction('React').filename).toBeDefined();
         });
         test('Text value should be correct', () => {
-            expect(setTextAction('Hello friend').text).toBe('Hello friend');
+            expect(setTextAction('Hello friend').filename).toBe('Hello friend');
         });
     })
 
