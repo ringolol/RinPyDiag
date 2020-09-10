@@ -1,37 +1,31 @@
 import React from 'react';
 import {
     setFileName, 
-    sendFile, 
-    setUserName, 
-    setPassword,
-    onLogIn,
-    onLogOut, 
+    sendFile,  
     SetFileNameActionType,
-    SetUserNameActionType,
-    SetPasswordActionType
+    downloadContent
 } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
 import BodyWidget from './BodyWidget';
 import { DiagApplication } from './DiagApplication';
-import { getBlocks, getFiles, getIsLoaded, getText, getUsername, getPassword } from '../../redux/blocks_selectors';
+import { getBlocks, getFiles, getIsLoaded, getText } from '../../redux/blocks_selectors';
 import { AppStateType } from '../../redux/store';
 import { BloksType, FilesType } from '../../types/types';
+import { getIsAuth, getToken } from '../../redux/auth_selectors';
+import { compose } from 'redux';
 
 type MapStatePropsType = {
     blocks: Array<BloksType>
     files: Array<FilesType>
     isLoaded: boolean
     filename: string
-    username: string
-    password: string
+    isAuth: boolean
+    token: string | null
 }
 type MapDispatchPropsType = {
     setFileName: (filename: string) => SetFileNameActionType 
     sendFile: (filename: string, ser: string) => void
-    setUserName: (username: string) => SetUserNameActionType
-    setPassword: (password: string) => SetPasswordActionType
-    onLogIn: (username: string, password: string) => void
-    onLogOut: () => void
+    downloadContent: (token: string | null) => void
 }
 type OwnPropsType = {
     app: any
@@ -51,16 +45,15 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     files: getFiles(state),
     isLoaded: getIsLoaded(state),
     filename: getText(state),
-    username: getUsername(state),
-    password: getPassword(state),
+    isAuth: getIsAuth(state),
+    token: getToken(state)
 }) 
 
 
-export default connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+export default compose(
+    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
     setFileName, 
-    sendFile,
-    setUserName,
-    setPassword,
-    onLogIn,
-    onLogOut,
-})(DemoCanvasContainer);
+    downloadContent,
+    sendFile
+    })
+)(DemoCanvasContainer);
