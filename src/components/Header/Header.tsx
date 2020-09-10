@@ -37,7 +37,6 @@ const Header: React.FC<PropsType> = (props) => {
                         <Nav className="mr-auto">
                             <div className={ styles.linkWrapper }>
                                 <Link to="/widget">Home</Link>
-                                <Link to="/users">Users</Link>
                                 <Link to="/about">About</Link>
                             </div>
                         </Nav>
