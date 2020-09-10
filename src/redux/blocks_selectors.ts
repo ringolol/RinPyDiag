@@ -16,11 +16,3 @@ export const getIsLoaded = (state: AppStateType) => {
 export const getText = (state: AppStateType) => {
     return state.blocksPage.filename;
 }
-
-export const getUsername = (state: AppStateType) => {
-    return state.blocksPage.username;
-}
-
-export const getPassword = (state: AppStateType) => {
-    return state.blocksPage.password;
-}
