@@ -6,8 +6,8 @@ import { getAutoAuth } from './redux/auth_reducer';
 import Login from './components/Login/Login';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import { Container } from 'react-bootstrap';
 import Header from './components/Header/Header';
+import About from './components/About/About';
 
 class App extends React.Component {
 	componentDidMount() {
@@ -21,11 +21,13 @@ class App extends React.Component {
 				<Header />
 				<Switch>
 					<Route exact path='/'
-					render={ () => <Redirect to={'/widget'} />} />
+						render={ () => <Redirect to={'/widget'} />} />
 					<Route path='/login'
 						render={() => <Login /> } />
 					<Route path='/widget'
 						render={() => <DemoCanvasContainer /> } />
+					<Route path='/about'
+						render={() => <About /> } />
 				</Switch>
 			</HashRouter>
 		)
