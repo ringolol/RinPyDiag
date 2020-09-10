@@ -5,7 +5,7 @@ import { TrayItemWidget, FileExplorer } from './TrayItemWidget';
 import { DefaultNodeModel } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { DemoCanvasWidget } from './DemoCanvasWidget';
-import { Body, Header, Content, Layer, Title } from './BodyWidget.styled';
+import { Body, Content, Layer, Title } from './BodyWidget.styled';
 import { PropsType } from './DemoCanvasContainer';
 
 
@@ -15,28 +15,10 @@ const BodyWidget: React.FC<PropsType> = (props) => {
 		let text = event.target.value;
 		props.setFileName(text);
 	}
-
+	
 	const onSendFile = () => {
 		console.log(props.app.getSerialized());
 		props.sendFile(props.filename, props.app.getSerialized());
-	}
-
-	const onUserNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		let username = event.target.value;
-		props.setUserName(username);
-	}
-
-	const onPasswordChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		let password = event.target.value;
-		props.setPassword(password);
-	}
-
-	const onLogIn = () => {
-		props.onLogIn(props.username, props.password);
-	}
-
-	const onLogOut = () => {
-		props.onLogOut();
 	}
 
 	const blocks = props.blocks.map((block: any) => {
@@ -62,15 +44,6 @@ const BodyWidget: React.FC<PropsType> = (props) => {
 	
 	return (
 		<Body>
-			<Header>
-				<div className="title">Storm React Diagrams - DnD demo</div>
-				<input type='text' value={ props.username } onChange={ onUserNameChange } />
-				<input type='password' value={ props.password } onChange={ onPasswordChange } />
-				<button onClick={ onLogIn }>Login</button>
-				<button onClick={ onLogOut }>Logout</button>
-				<input type='text' value={ props.filename } onChange={ onTextChange } />
-				<button onClick={ onSendFile }>Save File</button>
-			</Header>
 			<Content>
 				<TrayWidget>
 					<Title> Blocks:</Title>
