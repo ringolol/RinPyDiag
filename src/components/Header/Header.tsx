@@ -18,9 +18,18 @@ a, .navbar-brand, .navbar-nav .nav-link {
 
 const Header: React.FC<PropsType> = (props) => {
     const [show, setShow] = useState<boolean>(false);
-
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
+
+    const [filename, setFilename] = useState<string>('');
+
+    const onFilenameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setFilename(event.target.value);
+	}
+	
+	const sendFile = () => {
+		props.sendFile(filename, props.app.getSerialized());
+	}
 
     const onLogOut = () => {
 		props.onLogOut();
@@ -58,9 +67,12 @@ const Header: React.FC<PropsType> = (props) => {
                 <Modal.Body>
                     <Form>
                         <Form.Group controlId='fromBasicFilename'>
-                            <Form.Control type='text' placeholder='filename...' />
+                            <Form.Control type='text' placeholder='filename...'
+                                value={ filename } onChange={ onFilenameChange } />
                             <Form.Text className='text-muted'>What is the name of the file?</Form.Text>
                         </Form.Group>
+                        <Button variant="primary" className='float-right'
+                            onClick={ sendFile }>Save</Button>
                     </Form>
                 </Modal.Body>
             </Modal>

@@ -10,16 +10,6 @@ import { PropsType } from './DemoCanvasContainer';
 
 
 class BodyWidget extends React.Component<PropsType> {
-
-	onTextChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		let text = event.target.value;
-		this.props.setFileName(text);
-	}
-	
-	onSendFile = () => {
-		console.log(this.props.app.getSerialized());
-		this.props.sendFile(this.props.filename, this.props.app.getSerialized());
-	}
 	
 	render() {
 		const blocks = this.props.blocks.map((block: any) => {
