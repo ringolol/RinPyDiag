@@ -1,9 +1,43 @@
-import * as React from 'react';
-
+import React from 'react';
 import DemoCanvasContainer from './components/DemoCanvas/DemoCanvasContainer';
+import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
+import { getIsAuth } from './redux/auth_selectors';
+import { getAutoAuth } from './redux/auth_reducer';
+import Login from './components/Login/Login';
+import { connect } from 'react-redux';
+import { compose } from 'redux';
+import { Container } from 'react-bootstrap';
+import Header from './components/Header/Header';
 
-function App() {
-	return <DemoCanvasContainer />;
+class App extends React.Component {
+	componentDidMount() {
+		this.props.getAutoAuth();
+	}
+
+	render() {
+		if (!this.props.isAuth) return <Login />
+		return (
+			<HashRouter>
+				<Header />
+				<Switch>
+					<Route exact path='/'
+					render={ () => <Redirect to={'/widget'} />} />
+					<Route path='/login'
+						render={() => <Login /> } />
+					<Route path='/widget'
+						render={() => <DemoCanvasContainer /> } />
+				</Switch>
+			</HashRouter>
+		)
+	}
+	
 };
 
-export default App;
+const mapStatetoProps = (state) => ({
+	isAuth: getIsAuth(state)
+})
+  
+export default compose(
+	connect(mapStatetoProps, {
+	getAutoAuth})
+)(App);
