@@ -94,7 +94,6 @@ export const downloadContent = (token: string | null) => (dispatch: any) => {
             dispatch(setBlocks(blocks.data));
             dispatch(setFiles(files.data));
             dispatch(setIsLoaded(true));
-            console.log(blocks, files) // delete
         } else {
             console.warn()
         } 
