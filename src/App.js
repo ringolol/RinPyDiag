@@ -3,11 +3,11 @@ import DemoCanvasContainer from './components/DemoCanvas/DemoCanvasContainer';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { getIsAuth } from './redux/auth_selectors';
 import { getAutoAuth } from './redux/auth_reducer';
-import Login from './components/Login/Login';
 import { connect } from 'react-redux';
 import { compose } from 'redux';
-import Header from './components/Header/Header';
 import About from './components/About/About';
+import LoginContainer from './components/Login/LoginContainer';
+import HeaderContainer from './components/Header/HeaderContainer';
 
 class App extends React.Component {
 	componentDidMount() {
@@ -15,15 +15,15 @@ class App extends React.Component {
 	}
 
 	render() {
-		if (!this.props.isAuth) return <Login />
+		if (!this.props.isAuth) return <LoginContainer />
 		return (
 			<HashRouter>
-				<Header />
+				<HeaderContainer />
 				<Switch>
 					<Route exact path='/'
 						render={ () => <Redirect to={'/widget'} />} />
 					<Route path='/login'
-						render={() => <Login /> } />
+						render={() => <LoginContainer /> } />
 					<Route path='/widget'
 						render={() => <DemoCanvasContainer /> } />
 					<Route path='/about'
