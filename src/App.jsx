@@ -8,10 +8,12 @@ import { compose } from 'redux';
 import About from './components/About/About';
 import LoginContainer from './components/Login/LoginContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import { createDiagramApp } from './redux/app_reducer';
 
 class App extends React.Component {
 	componentDidMount() {
 		this.props.getAutoAuth();
+		this.props.createDiagramApp();
 	}
 
 	render() {
@@ -41,5 +43,7 @@ const mapStatetoProps = (state) => ({
   
 export default compose(
 	connect(mapStatetoProps, {
-	getAutoAuth})
+		getAutoAuth,
+		createDiagramApp
+	})
 )(App);
