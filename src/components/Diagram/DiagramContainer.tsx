@@ -6,7 +6,7 @@ import {
     downloadContent
 } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
-import BodyWidget from './BodyWidget';
+import Diagram from './Diagram';
 import { getBlocks, getFiles, getIsLoaded, getText } from '../../redux/blocks_selectors';
 import { AppStateType } from '../../redux/store';
 import { BloksType, FilesType } from '../../types/types';
@@ -35,7 +35,7 @@ export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 const DemoCanvasContainer: React.FC<PropsType> = (props) => {
     
     return ( 
-        <BodyWidget {...props} /> 
+        <Diagram {...props} /> 
     );
 }
 

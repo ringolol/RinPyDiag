@@ -1,15 +1,15 @@
-import React, { useState } from 'react';
+import React from 'react';
 import * as _ from 'lodash';
-import { TrayWidget } from './TrayWidget';
-import { TrayItemWidget, FileExplorer } from './TrayItemWidget';
+import { TrayWidget } from './Tray/TrayWidget';
+import { TrayItemWidget, FileExplorer } from './Tray/TrayItemWidget';
 import { DefaultNodeModel } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
-import { DemoCanvasWidget } from './DemoCanvasWidget';
-import { Body, Content, Layer, Title } from './BodyWidget.styled';
-import { PropsType } from './DemoCanvasContainer';
+import { Canvas } from './Canvas/Canvas';
+import styled from '@emotion/styled';
+import { PropsType } from './DiagramContainer';
 
 
-class BodyWidget extends React.Component<PropsType> {
+class Diagram extends React.Component<PropsType> {
 	
 	render() {
 		const blocks = this.props.blocks.map((block: any) => {
@@ -59,9 +59,9 @@ class BodyWidget extends React.Component<PropsType> {
 						onDragOver={(event) => {
 							event.preventDefault();
 						}}>
-						<DemoCanvasWidget>
+						<Canvas>
 							<CanvasWidget engine={this.props.diagramApp.getDiagramEngine()} />
-						</DemoCanvasWidget>
+						</Canvas>
 					</Layer>
 					<TrayWidget>
 						<Title>Files:</Title>
@@ -73,4 +73,27 @@ class BodyWidget extends React.Component<PropsType> {
 	}
 }
 
-export default BodyWidget;
+export default Diagram;
+
+const Body = styled.div`
+flex-grow: 1;
+display: flex;
+flex-direction: column;
+min-height: 100%;
+`;
+
+const Content = styled.div`
+display: flex;
+flex-grow: 1;
+`;
+
+const Layer = styled.div`
+position: relative;
+flex-grow: 1;
+`;
+
+const Title = styled.div`
+color: white;
+font-family: Helvetica, Arial;
+padding: 10px;
+`;

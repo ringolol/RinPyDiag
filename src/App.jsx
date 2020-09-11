@@ -1,5 +1,4 @@
 import React from 'react';
-import DemoCanvasContainer from './components/DemoCanvas/DemoCanvasContainer';
 import { HashRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { getIsAuth } from './redux/auth_selectors';
 import { getAutoAuth } from './redux/auth_reducer';
@@ -9,6 +8,7 @@ import About from './components/About/About';
 import LoginContainer from './components/Login/LoginContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import { createDiagramApp } from './redux/app_reducer';
+import DiagramContainer from './components/Diagram/DiagramContainer';
 
 class App extends React.Component {
 	componentDidMount() {
@@ -27,7 +27,7 @@ class App extends React.Component {
 					<Route path='/login'
 						render={() => <LoginContainer /> } />
 					<Route path='/widget'
-						render={() => <DemoCanvasContainer /> } />
+						render={() => <DiagramContainer /> } />
 					<Route path='/about'
 						render={() => <About /> } />
 				</Switch>

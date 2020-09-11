@@ -18,7 +18,7 @@ describe('Actions into blocks_reducer', () => {
         name: "integ",
         outpN: 1
     }]
-
+    
     describe('setBlocks: ', () => {
         const setBlocksAction = () => blocksReducer(state, setBlocks(testArr));
 

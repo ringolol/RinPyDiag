@@ -1,7 +1,7 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 
-export interface DemoCanvasWidgetProps {
+export interface CanvasProps {
 	color?: string;
 	background?: string;
 }
@@ -43,7 +43,7 @@ export const Container = styled.div<{ color: string; background: string }>`
 		);
 `;
 
-export class DemoCanvasWidget extends React.Component<DemoCanvasWidgetProps> {
+export class Canvas extends React.Component<CanvasProps> {
 	render() {
 		return (
 			<Container
