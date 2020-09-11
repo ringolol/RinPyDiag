@@ -14,22 +14,20 @@ export const authAPI = {
     authMe () {
         const token = localStorage.getItem('REACT_TOKEN_AUTH');
         const username = localStorage.getItem('REACT_USERNAME');
-        return [token, username] || [null, null];
+        return [token || null, username || null];
 
     },
-    async login (username, password) {
-        try {
-            const response = await instance.post('/api-token-auth/', {
-                username,
-                password,
-            });
-            console.log('get-token');
+    login (username, password) {
+        return instance.post('/api-token-auth/', {
+            username,
+            password,
+        }).then((response) => {
             localStorage.setItem('REACT_TOKEN_AUTH', response.data.token);
             localStorage.setItem('REACT_USERNAME', username);
-            return response.data.token;
-        } catch (error) {
-            return errorsLog(error);
-        }
+            return response;
+        }).catch(error => {
+            console.log(error);
+        })
     },
     logout () { 
         localStorage.removeItem('REACT_TOKEN_AUTH');
@@ -52,7 +50,6 @@ export const sendFileAPI = {
     }
 }
 
-
 export const blocksAPI = {
     async getBlocks (token) {
         try {
@@ -69,7 +66,6 @@ export const blocksAPI = {
         }
     }
 }
-
 
 export const filesAPI = {
     async getFiles (token) {

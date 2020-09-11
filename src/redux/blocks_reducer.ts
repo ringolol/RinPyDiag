@@ -83,19 +83,18 @@ export type SetFileNameActionType = {
 export const setFileName = (filename: string): SetFileNameActionType => ({ type: SET_FILE_NAME, filename });
 
 
-
 export const downloadContent = (token: string | null) => (dispatch: any) => {
     const blocks = blocksAPI.getBlocks(token);
     const files = filesAPI.getFiles(token);
 
     Promise.all([blocks, files]).then(resolve => {
         const [blocks, files] = resolve;
-        if(blocks.status === 200 && files.status === 200) {
+        if(blocks && blocks.status === 200 && files && files.status === 200) {
             dispatch(setBlocks(blocks.data));
             dispatch(setFiles(files.data));
             dispatch(setIsLoaded(true));
         } else {
-            console.warn()
+            console.error('Some error downloadContent')
         } 
     })
 }
@@ -107,10 +106,10 @@ export const sendFile = (filename: string, ser: string) => async (dispatch: any,
     const response = await sendFileAPI.sendFile(token, username, filename, ser);
     if (response && response.status === 201) {
         dispatch(setFile(response.data));
-    }
+    } else {
+        console.error('Some error sendFile')
+    } 
 }
-
-
 
 
 export default blocksReducer;

@@ -67,8 +67,10 @@ export const getAutoAuth = () => (dispatch: any) => {
 }
 
 export const onLogIn = (username: string, password: string) =>  (dispatch: any) => {
-    authAPI.login(username, password).then(() => {
-        dispatch(getAutoAuth());
+    authAPI.login(username, password).then((response: any) => {
+        response && response.status === 200
+        ? dispatch(getAutoAuth())
+        : console.log(response);
     })
 }
 

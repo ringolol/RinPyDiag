@@ -33,5 +33,4 @@ export const createDiagramApp = () => (dispatch: any) => {
     dispatch(setDiagramApp(diagramApp));
 }
 
-
 export default appReducer;
