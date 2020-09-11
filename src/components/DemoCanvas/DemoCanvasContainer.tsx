@@ -7,12 +7,12 @@ import {
 } from '../../redux/blocks_reducer';
 import { connect } from 'react-redux';
 import BodyWidget from './BodyWidget';
-import { DiagApplication } from './DiagApplication';
 import { getBlocks, getFiles, getIsLoaded, getText } from '../../redux/blocks_selectors';
 import { AppStateType } from '../../redux/store';
 import { BloksType, FilesType } from '../../types/types';
 import { getIsAuth, getToken } from '../../redux/auth_selectors';
 import { compose } from 'redux';
+import { getDiagramApp } from '../../redux/app_selectors';
 
 type MapStatePropsType = {
     blocks: Array<BloksType>
@@ -21,6 +21,7 @@ type MapStatePropsType = {
     filename: string
     isAuth: boolean
     token: string | null
+    diagramApp: any
 }
 type MapDispatchPropsType = {
     setFileName: (filename: string) => SetFileNameActionType 
@@ -28,15 +29,13 @@ type MapDispatchPropsType = {
     downloadContent: (token: string | null) => void
 }
 type OwnPropsType = {
-    app: any
 }
 export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 
 const DemoCanvasContainer: React.FC<PropsType> = (props) => {
-    const app = new DiagApplication();
     
     return ( 
-        <BodyWidget {...props} app={ app } /> 
+        <BodyWidget {...props} /> 
     );
 }
 
@@ -46,7 +45,8 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     isLoaded: getIsLoaded(state),
     filename: getText(state),
     isAuth: getIsAuth(state),
-    token: getToken(state)
+    token: getToken(state),
+    diagramApp: getDiagramApp(state)
 }) 
 
 

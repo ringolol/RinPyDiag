@@ -28,7 +28,7 @@ const Header: React.FC<PropsType> = (props) => {
 	}
 	
 	const sendFile = () => {
-		props.sendFile(filename, props.app.getSerialized());
+		props.sendFile(filename, props.diagramApp.getSerialized());
 	}
 
     const onLogOut = () => {

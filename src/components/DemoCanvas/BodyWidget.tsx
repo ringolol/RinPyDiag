@@ -28,7 +28,7 @@ class BodyWidget extends React.Component<PropsType> {
 					key={ file.name } 
 					ser={ file.ser } 
 					name={ file.name }
-					app={ this.props.app }
+					app={ this.props.diagramApp }
 					color="rgb(150,150,150)" />
 			)
 		})
@@ -51,16 +51,16 @@ class BodyWidget extends React.Component<PropsType> {
 							for (let i = 0; i < data.block.outpN; i++) {
 								node.addOutPort('Out_' + i);
 							}
-							var point = this.props.app.getDiagramEngine().getRelativeMousePoint(event);
+							var point = this.props.diagramApp.getDiagramEngine().getRelativeMousePoint(event);
 							node.setPosition(point);
-							this.props.app.getDiagramEngine().getModel().addNode(node);
+							this.props.diagramApp.getDiagramEngine().getModel().addNode(node);
 							this.forceUpdate();
 						}}
 						onDragOver={(event) => {
 							event.preventDefault();
 						}}>
 						<DemoCanvasWidget>
-							<CanvasWidget engine={this.props.app.getDiagramEngine()} />
+							<CanvasWidget engine={this.props.diagramApp.getDiagramEngine()} />
 						</DemoCanvasWidget>
 					</Layer>
 					<TrayWidget>
