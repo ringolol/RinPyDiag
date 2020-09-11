@@ -7,70 +7,72 @@ import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { Canvas } from './Canvas/Canvas';
 import styled from '@emotion/styled';
 import { PropsType } from './DiagramContainer';
+import { BloksType, FilesType } from '../../types/types';
 
 
 class Diagram extends React.Component<PropsType> {
+
+	onDrop = (event: any) => {
+		const data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
+		let node: DefaultNodeModel = new DefaultNodeModel(data.block.name, 'rgb(150,150,150)');
+
+		for (let i = 0; i < data.block.inpN; i++) {
+			node.addInPort('In_' + i);
+		}
+		for (let i = 0; i < data.block.outpN; i++) {
+			node.addOutPort('Out_' + i);
+		}
+		const point = this.props.diagramApp.getDiagramEngine().getRelativeMousePoint(event);
+		node.setPosition(point);
+		this.props.diagramApp.getDiagramEngine().getModel().addNode(node);
+		this.forceUpdate();
+	}
+
+	onDragOver = (event: any) => {
+		event.preventDefault();
+	}
 	
 	render() {
-		const blocks = this.props.blocks.map((block: any) => {
-			return (
-				<TrayItemWidget 
-					key={ block.name } 
-					model={{ block: block }} 
-					name={ block.name } 
-					color="rgb(150,150,150)" />
-			)
-		})
-	
-		const files = this.props.files.map((file: any) => {
-			return (
-				<FileExplorer
-					key={ file.name } 
-					ser={ file.ser } 
-					name={ file.name }
-					app={ this.props.diagramApp }
-					color="rgb(150,150,150)" />
-			)
-		})
-
 		return (
 			<Body>
 				<Content>
 					<TrayWidget>
 						<Title> Blocks:</Title>
-						{ blocks }
+						<Blocks blocks={ this.props.blocks } />
 					</TrayWidget>
-					<Layer
-						onDrop={(event) => {
-							var data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
-							var node: DefaultNodeModel;
-							node = new DefaultNodeModel(data.block.name, 'rgb(150,150,150)');
-							for (let i = 0; i < data.block.inpN; i++) {
-								node.addInPort('In_' + i);
-							}
-							for (let i = 0; i < data.block.outpN; i++) {
-								node.addOutPort('Out_' + i);
-							}
-							var point = this.props.diagramApp.getDiagramEngine().getRelativeMousePoint(event);
-							node.setPosition(point);
-							this.props.diagramApp.getDiagramEngine().getModel().addNode(node);
-							this.forceUpdate();
-						}}
-						onDragOver={(event) => {
-							event.preventDefault();
-						}}>
+					<Layer onDrop={ this.onDrop } onDragOver={ this.onDragOver }>
 						<Canvas>
 							<CanvasWidget engine={this.props.diagramApp.getDiagramEngine()} />
 						</Canvas>
 					</Layer>
 					<TrayWidget>
 						<Title>Files:</Title>
-						{ files }
+						<Files diagramApp={ this.props.diagramApp } files={ this.props.files }/>
 					</TrayWidget>
 				</Content>
 			</Body>
 		);
 	}
+}
+
+const Blocks = (props: any) => {
+	return (
+		props.blocks.map((block: BloksType) => (
+			<TrayItemWidget 
+				key={ block.name } model={{ block: block }} 
+				name={ block.name } color="rgb(150,150,150)" />
+		))
+	)
+}
+
+const Files = (props: any) => {
+	return (
+		props.files.map((file: FilesType) => (
+			<FileExplorer
+				key={ file.name } ser={ file.ser } name={ file.name }
+				app={ props.diagramApp }color="rgb(150,150,150)" />
+		))
+	)
 }
 
 export default Diagram;
