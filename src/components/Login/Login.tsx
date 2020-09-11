@@ -1,6 +1,6 @@
+import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
-import styles from './Login.module.css';
 import { PropsType } from './LoginContainer';
 
 const Login: React.FC<PropsType> = (props) => {
@@ -25,7 +25,7 @@ const Login: React.FC<PropsType> = (props) => {
     }
 
     return(
-        <div className={ styles.wrapper } >
+        <Wrapper>
             <Container style={{maxHeight: '400px', maxWidth: '300px'}}>
                 <Form>
                     <Form.Group controlId='fromBasicEmail'>
@@ -47,8 +47,16 @@ const Login: React.FC<PropsType> = (props) => {
                         >Log in</Button>
                 </Form>
             </Container>
-        </div>
+        </Wrapper>
     )
 }
 
 export default Login;
+
+
+const Wrapper = styled.div `
+    height: 100vh;
+    display: flex;
+    justify-items: center;
+    align-items: center;
+`
