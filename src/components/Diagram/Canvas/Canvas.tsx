@@ -6,6 +6,18 @@ export interface CanvasProps {
 	background?: string;
 }
 
+export class Canvas extends React.Component<CanvasProps> {
+	render() {
+		return (
+			<Container
+				background={this.props.background || 'rgb(60, 60, 60)'}
+				color={this.props.color || 'rgba(255,255,255, 0.05)'}>
+				{this.props.children}
+			</Container>
+		);
+	}
+}
+
 export const Container = styled.div<{ color: string; background: string }>`
 	height: 100%;
 	background-color: ${(p) => p.background};
@@ -42,15 +54,3 @@ export const Container = styled.div<{ color: string; background: string }>`
 			transparent
 		);
 `;
-
-export class Canvas extends React.Component<CanvasProps> {
-	render() {
-		return (
-			<Container
-				background={this.props.background || 'rgb(60, 60, 60)'}
-				color={this.props.color || 'rgba(255,255,255, 0.05)'}>
-				{this.props.children}
-			</Container>
-		);
-	}
-}
