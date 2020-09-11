@@ -3,17 +3,6 @@ import { Nav, Navbar, Button, Container, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { PropsType } from './HeaderContainer';
-import styles from './Header.module.css';
-
-const Styles = styled.div `
-a, .navbar-brand, .navbar-nav .nav-link {
-    color: #adb1b8;
-    
-    &:hover {
-        color: white
-    }
-}
-`
 
 
 const Header: React.FC<PropsType> = (props) => {
@@ -28,26 +17,34 @@ const Header: React.FC<PropsType> = (props) => {
 	}
 	
 	const sendFile = () => {
-		props.sendFile(filename, props.diagramApp.getSerialized());
+        props.sendFile(filename, props.diagramApp.getSerialized());
+        handleClose();
 	}
 
     const onLogOut = () => {
 		props.onLogOut();
-	}
+    }
+    
+    const pressEnter = (event: any) => {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+            sendFile();
+        }
+    }
 
     return (
         <>
-            <Styles>
+            <NavbarContainer>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                     <Container>
                         <Navbar.Brand>Rin Diagramm</Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
-                            <div className={ styles.linkWrapper }>
+                            <LinkWrapper>
                                 <Link to="/widget">Home</Link>
                                 <Link to="/about">About</Link>
-                            </div>
+                            </LinkWrapper>
                         </Nav>
                         <Nav>
                             <Button 
@@ -59,7 +56,7 @@ const Header: React.FC<PropsType> = (props) => {
                         </Navbar.Collapse>
                     </Container>
                 </Navbar>
-            </Styles>
+            </NavbarContainer>
             <Modal show={ show } onHide={ handleClose } centered>
                 <Modal.Header closeButton>
                     <Modal.Title>Add file</Modal.Title>
@@ -68,7 +65,8 @@ const Header: React.FC<PropsType> = (props) => {
                     <Form>
                         <Form.Group controlId='fromBasicFilename'>
                             <Form.Control type='text' placeholder='filename...'
-                                value={ filename } onChange={ onFilenameChange } />
+                                value={ filename } onChange={ onFilenameChange }
+                                onKeyPress={ pressEnter } />
                             <Form.Text className='text-muted'>What is the name of the file?</Form.Text>
                         </Form.Group>
                         <Button variant="primary" className='float-right'
@@ -81,3 +79,21 @@ const Header: React.FC<PropsType> = (props) => {
 }
 
 export default Header;
+
+
+const NavbarContainer = styled.div `
+a, .navbar-brand, .navbar-nav .nav-link {
+    color: #adb1b8;
+    
+    &:hover {
+        color: white
+    }
+}
+`
+const LinkWrapper = styled.div `
+    min-width: 100px;
+    max-width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+`
