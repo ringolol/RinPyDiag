@@ -37,12 +37,12 @@ const Header: React.FC<PropsType> = (props) => {
             <NavbarContainer>
                 <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
                     <Container>
-                        <Navbar.Brand>Rin Diagramm</Navbar.Brand>
+                        <Navbar.Brand>Rin Diagram</Navbar.Brand>
                         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                         <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                             <LinkWrapper>
-                                <Link to="/widget">Home</Link>
+                                <Link to="/widget">Diagram</Link>
                                 <Link to="/about">About</Link>
                             </LinkWrapper>
                         </Nav>
@@ -91,7 +91,7 @@ a, .navbar-brand, .navbar-nav .nav-link {
 }
 `
 const LinkWrapper = styled.div `
-    min-width: 100px;
+    min-width: 150px;
     max-width: 200px;
     display: flex;
     align-items: center;

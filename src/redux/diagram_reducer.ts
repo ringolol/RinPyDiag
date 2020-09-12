@@ -1,5 +1,5 @@
 import { getToken, getUsername } from './auth_selectors';
-import { blocksAPI, filesAPI, sendFileAPI } from "../api/api";
+import { diagramAPI } from "../api/api";
 import { BloksType, FilesType } from "../types/types";
 
 const GET_BLOCKS = 'blocks/GET_BLOCKS';
@@ -18,7 +18,7 @@ let initialState = {
 
 export type InitialStateType = typeof initialState;
 
-const blocksReducer = (state = initialState, action: any): InitialStateType => {
+const diagramReducer = (state = initialState, action: any): InitialStateType => {
 
     switch (action.type) {
         case GET_BLOCKS: {
@@ -55,7 +55,7 @@ const blocksReducer = (state = initialState, action: any): InitialStateType => {
             return state;
     }  
 }
-
+// Actions
 type SetBlocksActionType = {
     type: typeof GET_BLOCKS
     blocks: Array<BloksType>
@@ -82,10 +82,10 @@ export type SetFileNameActionType = {
 }
 export const setFileName = (filename: string): SetFileNameActionType => ({ type: SET_FILE_NAME, filename });
 
-
+// Thunks
 export const downloadContent = (token: string | null) => (dispatch: any) => {
-    const blocks = blocksAPI.getBlocks(token);
-    const files = filesAPI.getFiles(token);
+    const blocks = diagramAPI.getBlocks(token);
+    const files = diagramAPI.getFiles(token);
 
     Promise.all([blocks, files]).then(resolve => {
         const [blocks, files] = resolve;
@@ -103,7 +103,7 @@ export const sendFile = (filename: string, ser: string) => async (dispatch: any,
     const state = getState();
     const token = getToken(state);
     const username = getUsername(state);
-    const response = await sendFileAPI.sendFile(token, username, filename, ser);
+    const response = await diagramAPI.sendFile(token, username, filename, ser);
     if (response && response.status === 201) {
         dispatch(setFile(response.data));
     } else {
@@ -112,4 +112,4 @@ export const sendFile = (filename: string, ser: string) => async (dispatch: any,
 }
 
 
-export default blocksReducer;
+export default diagramReducer;

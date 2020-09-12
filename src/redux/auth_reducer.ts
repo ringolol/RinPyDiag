@@ -1,4 +1,4 @@
-import { downloadContent } from './blocks_reducer';
+import { downloadContent } from './diagram_reducer';
 import { authAPI } from "../api/api";
 
 const SET_AUTH = 'auth/SET_AUTH';

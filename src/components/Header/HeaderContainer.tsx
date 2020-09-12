@@ -4,7 +4,7 @@ import { onLogOut } from '../../redux/auth_reducer';
 import { compose } from 'redux';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/store';
-import { sendFile } from '../../redux/blocks_reducer';
+import { sendFile } from '../../redux/diagram_reducer';
 import { getDiagramApp } from '../../redux/app_selectors';
 
 

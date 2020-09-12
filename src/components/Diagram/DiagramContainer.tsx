@@ -4,10 +4,10 @@ import {
     sendFile,  
     SetFileNameActionType,
     downloadContent
-} from '../../redux/blocks_reducer';
+} from '../../redux/diagram_reducer';
 import { connect } from 'react-redux';
 import Diagram from './Diagram';
-import { getBlocks, getFiles, getIsLoaded, getText } from '../../redux/blocks_selectors';
+import { getBlocks, getFiles, getIsLoaded, getText } from '../../redux/diagram_selectors';
 import { AppStateType } from '../../redux/store';
 import { BloksType, FilesType } from '../../types/types';
 import { getIsAuth, getToken } from '../../redux/auth_selectors';

@@ -1,5 +1,5 @@
 import { BloksType, FilesType } from "../types/types";
-import blocksReducer, { setBlocks, setFiles, setIsLoaded, setFileName, setFile } from "./blocks_reducer";
+import diagramReducer, { setBlocks, setFiles, setIsLoaded, setFileName, setFile } from "./diagram_reducer";
 import jest from 'jest';
 
 // Test state
@@ -28,7 +28,7 @@ describe('Actions into blocks_reducer', () => {
     const filesArr: Array<FilesType> = [file]
     
     describe('setBlocks: ', () => {
-        const setBlocksAction = () => blocksReducer(state, setBlocks(blocksArr));
+        const setBlocksAction = () => diagramReducer(state, setBlocks(blocksArr));
 
         test('Length of the blocks should increase', () => {
             expect(setBlocksAction().blocks.length).toBeGreaterThan(0);
@@ -41,7 +41,7 @@ describe('Actions into blocks_reducer', () => {
         });
     })
     describe('setFiles: ', () => {
-        const setFilesAction = () => blocksReducer(state, setFiles(filesArr));
+        const setFilesAction = () => diagramReducer(state, setFiles(filesArr));
 
         test('Length of the files should increase', () => {
             expect(setFilesAction().files.length).toBeGreaterThan(0);
@@ -54,7 +54,7 @@ describe('Actions into blocks_reducer', () => {
         });
     })
     describe('setIsLoaded: ', () => {
-        const setIsLoadedAction = (boolean: boolean) => blocksReducer(state, setIsLoaded(boolean));
+        const setIsLoadedAction = (boolean: boolean) => diagramReducer(state, setIsLoaded(boolean));
 
         test('isLoaded should be defined', () => {
             expect(setIsLoadedAction(true).isLoaded).toBeDefined();
@@ -67,7 +67,7 @@ describe('Actions into blocks_reducer', () => {
         });
     })
     describe('setFileName: ', () => {
-        const setTextAction = (filename: string) => blocksReducer(state, setFileName(filename));
+        const setTextAction = (filename: string) => diagramReducer(state, setFileName(filename));
 
         test('Length of the text should increase', () => {
             expect(setTextAction('Hello friend').filename.length).toBeGreaterThan(10);
@@ -83,7 +83,7 @@ describe('Actions into blocks_reducer', () => {
         });
     })
     describe('setFile: ', () => {
-        const setFileAction = () => blocksReducer(state, setFile(file));
+        const setFileAction = () => diagramReducer(state, setFile(file));
 
         test('Length of the files should increase', () => {
             expect(setFileAction().files.length).toBeGreaterThan(0);

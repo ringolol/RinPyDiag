@@ -2,17 +2,17 @@ import { createSelector } from "reselect";
 import { AppStateType } from "./store";
 
 export const getBlocks = (state: AppStateType) => {
-    return state.blocksPage.blocks;
+    return state.diagramPage.blocks;
 }
 
 export const getFiles = (state: AppStateType) => {
-    return state.blocksPage.files;
+    return state.diagramPage.files;
 }
 
 export const getIsLoaded = (state: AppStateType) => {
-    return state.blocksPage.isLoaded;
+    return state.diagramPage.isLoaded;
 }
 
 export const getText = (state: AppStateType) => {
-    return state.blocksPage.filename;
+    return state.diagramPage.filename;
 }
