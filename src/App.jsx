@@ -9,6 +9,7 @@ import LoginContainer from './components/Login/LoginContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import { createDiagramApp } from './redux/app_reducer';
 import DiagramContainer from './components/Diagram/DiagramContainer';
+import styled from '@emotion/styled';
 
 class App extends React.Component {
 	componentDidMount() {
@@ -20,17 +21,19 @@ class App extends React.Component {
 		if (!this.props.isAuth) return <LoginContainer />
 		return (
 			<HashRouter>
-				<HeaderContainer />
-				<Switch>
-					<Route exact path='/'
-						render={ () => <Redirect to={'/widget'} />} />
-					<Route path='/login'
-						render={() => <LoginContainer /> } />
-					<Route path='/widget'
-						render={() => <DiagramContainer /> } />
-					<Route path='/about'
-						render={() => <About /> } />
-				</Switch>
+				<Container>
+					<HeaderContainer />
+					<Switch>
+						<Route exact path='/'
+							render={ () => <Redirect to={'/widget'} />} />
+						<Route path='/login'
+							render={() => <LoginContainer /> } />
+						<Route path='/widget'
+							render={() => <DiagramContainer /> } />
+						<Route path='/about'
+							render={() => <About /> } />
+					</Switch>
+				</Container>
 			</HashRouter>
 		)
 	}
@@ -47,3 +50,8 @@ export default compose(
 		createDiagramApp
 	})
 )(App);
+
+
+const Container = styled.div `
+	height: 100vh;
+`
