@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
     setFileName, 
     sendFile,  
     SetFileNameActionType,
-    downloadContent
+    downloadContent, setIsMount, SetIsMountActionType
 } from '../../redux/diagram_reducer';
 import { connect } from 'react-redux';
 import Diagram from './Diagram';
@@ -27,12 +27,20 @@ type MapDispatchPropsType = {
     setFileName: (filename: string) => SetFileNameActionType 
     sendFile: (filename: string, ser: string) => void
     downloadContent: (token: string | null) => void
+    setIsMount: (isMounted: boolean) => SetIsMountActionType
 }
 type OwnPropsType = {
 }
 export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 
-const DemoCanvasContainer: React.FC<PropsType> = (props) => {
+const DiagramContainer: React.FC<PropsType> = (props) => {
+
+    useEffect(() => {
+        props.setIsMount(true);
+        return () => { 
+            props.setIsMount(false) 
+        }
+    })
     
     return ( 
         <Diagram {...props} /> 
@@ -54,6 +62,7 @@ export default compose(
     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
     setFileName, 
     downloadContent,
-    sendFile
+    sendFile, 
+    setIsMount
     })
-)(DemoCanvasContainer);
+)(DiagramContainer);

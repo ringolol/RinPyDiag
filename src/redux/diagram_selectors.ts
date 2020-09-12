@@ -16,3 +16,7 @@ export const getIsLoaded = (state: AppStateType) => {
 export const getText = (state: AppStateType) => {
     return state.diagramPage.filename;
 }
+
+export const getIsMount = (state: AppStateType) => {
+    return state.diagramPage.isMounted;
+}

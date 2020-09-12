@@ -47,10 +47,13 @@ const Header: React.FC<PropsType> = (props) => {
                             </LinkWrapper>
                         </Nav>
                         <Nav>
-                            <Button 
-                            variant="primary" 
-                            className="mr-2"
-                            onClick={ handleShow }>Save File</Button>
+                            { 
+                                props.isMounted && 
+                                <Button 
+                                    variant="primary" 
+                                    className="mr-2"
+                                    onClick={ handleShow }>Save File</Button>
+                            }
                             <Button variant="primary" onClick={ onLogOut }>Logout</Button>
                         </Nav>
                         </Navbar.Collapse>

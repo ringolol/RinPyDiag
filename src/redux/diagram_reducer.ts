@@ -7,13 +7,15 @@ const GET_FILES = 'blocks/GET_FILES';
 const SET_FILE = 'blocks/SET_FILE';
 const IS_LOADED = 'blocks/IS_LOADED';
 const SET_FILE_NAME = 'blocks/SET_TEXT';
+const SET_IS_MOUNT = 'blocks/SET_IS_MOUNT';
 
 
 let initialState = {
     blocks: [] as Array<BloksType>,
     files: [] as Array<FilesType>,
     isLoaded: false as boolean,
-    filename: '' as string
+    filename: '' as string,
+    isMounted: false as boolean
 };
 
 export type InitialStateType = typeof initialState;
@@ -51,6 +53,12 @@ const diagramReducer = (state = initialState, action: any): InitialStateType => 
                 filename: action.filename,
             }
         }
+        case SET_IS_MOUNT: {
+            return {
+                ...state,
+                isMounted: action.isMounted,
+            }
+        }
         default:
             return state;
     }  
@@ -81,6 +89,11 @@ export type SetFileNameActionType = {
     filename: string
 }
 export const setFileName = (filename: string): SetFileNameActionType => ({ type: SET_FILE_NAME, filename });
+export type SetIsMountActionType = {
+    type: typeof SET_IS_MOUNT
+    isMounted: boolean
+}
+export const setIsMount = (isMounted: boolean): SetIsMountActionType => ({ type: SET_IS_MOUNT, isMounted });
 
 // Thunks
 export const downloadContent = (token: string | null) => (dispatch: any) => {
