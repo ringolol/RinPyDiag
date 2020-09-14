@@ -1,9 +1,13 @@
 import { createStore, combineReducers, applyMiddleware } from "redux";
 import thunkMiddleware from 'redux-thunk';
-import blocksReducer from "./blocks_reducer";
+import diagramReducer from "./diagram_reducer";
+import authReducer from "./auth_reducer";
+import appReducer from "./app_reducer";
 
 let rootReducer = combineReducers({
-    blocksPage: blocksReducer,
+    diagramPage: diagramReducer,
+    auth: authReducer,
+    app: appReducer
 });
 
 type RootReducerType = typeof rootReducer;
