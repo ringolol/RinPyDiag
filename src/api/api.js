@@ -4,59 +4,71 @@ import { errorsLog } from '../utils/logs/errorsLog';
 const TOKEN_AUTH = 'REACT_TOKEN_AUTH';
 const USERNAME = 'REACT_USERNAME';
 
-const baseURL = 'http://31.134.153.18/'; // 'http://127.0.0.1:8000/' || 'http://31.134.153.18/'
+// const baseURL = 'http://31.134.153.18/';
+// const baseURL = 'http://31.134.153.18:8000/';
+const baseURL = 'http://127.0.0.1:8000/';
+
+// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+// axios.defaults.xsrfCookieName = "csrftoken";
+
 const instance = axios.create({ 
-    baseURL: baseURL
-});
-const headers = (token, content) => {
-    return {
-        'Authorization': `Token ${token}`,
-        'Content-Type': content && 'application/json'
+    baseURL: baseURL,
+    withCredentials: true,
+    // xsrfCookieName: 'csrftoken',
+    // xsrfHeaderName: 'X-CSRFTOKEN',
+    timeout: 10000,
+    // transformRequest: [(data) => JSON.stringify(data.data)],
+    headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
     }
-}
+});
 
 // API
 export const authAPI = {
-    authMe () {
-        const token = localStorage.getItem(TOKEN_AUTH);
-        const username = localStorage.getItem(USERNAME);
-        return [token || null, username || null];
-
+    authMe() {
+        return localStorage.getItem(USERNAME);
     },
-    login (username, password) {
-        return instance.post('/api-token-auth/', {
-            username,
-            password,
-        }).then((response) => {
-            localStorage.setItem(TOKEN_AUTH, response.data.token);
+    login(username, password) {
+        return instance.post('/api/v1/accounts/login/', {
+            login: username,
+            password: password,
+        }, {})
+        .then(response => {
+            console.log(response);
             localStorage.setItem(USERNAME, username);
-            return response;
-        }).catch(error => {
-            console.log(error);
+            return response })
+        .catch(error => {
+            console.log(error)
         })
     },
     logout () { 
-        localStorage.removeItem(TOKEN_AUTH);
         localStorage.removeItem(USERNAME);
+        return instance.post('/api/v1/accounts/logout/', {
+            revoke_token: true
+        }, {})
+        .then(response => {
+            console.log(response);
+            return response })
+        .catch(error => {
+            console.log(error)
+        })
     }
 };
 
 export const diagramAPI = {
-    sendFile(token, user, name, ser) {
+    sendFile(user, name, ser) {
         return instance.post('/diagram/api/files/', {
             user, name, ser
-        }, {
-            headers: headers(token, true)
-        }).catch(error => errorsLog(error));
+        }, {})
+        .catch(error => errorsLog(error));
     },
-    getFiles (token) {
-        return instance.get('diagram/api/files/', {
-            headers: headers(token)
-        }).catch(error => errorsLog(error));
+    getFiles() {
+        return instance.get('diagram/api/files/', {})
+        .catch(error => errorsLog(error));
     },
-    getBlocks (token) {
-        return instance.get('diagram/api/blocks/', { 
-            headers: headers(token) 
-        }).catch(error => errorsLog(error));
+    getBlocks() {
+        return instance.get('diagram/api/blocks/', {})
+        .catch(error => errorsLog(error));
     }
 }

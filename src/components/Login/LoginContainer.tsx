@@ -9,7 +9,7 @@ type MapStatePropsType = {
     
 }
 type MapDispatchPropsType = {
-    onLogIn: (username: string, password: string) => void
+    onLogIn: (login: string, password: string) => void
 }
 type OwnPropsType = {
 }

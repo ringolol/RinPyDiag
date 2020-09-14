@@ -1,4 +1,4 @@
-import { getToken, getUsername } from './auth_selectors';
+import { getUsername } from './auth_selectors';
 import { diagramAPI } from "../api/api";
 import { BloksType, FilesType } from "../types/types";
 
@@ -96,9 +96,9 @@ export type SetIsMountActionType = {
 export const setIsMount = (isMounted: boolean): SetIsMountActionType => ({ type: SET_IS_MOUNT, isMounted });
 
 // Thunks
-export const downloadContent = (token: string | null) => (dispatch: any) => {
-    const blocks = diagramAPI.getBlocks(token);
-    const files = diagramAPI.getFiles(token);
+export const downloadContent = () => (dispatch: any) => {
+    const blocks = diagramAPI.getBlocks();
+    const files = diagramAPI.getFiles();
 
     Promise.all([blocks, files]).then(resolve => {
         const [blocks, files] = resolve;
@@ -114,9 +114,8 @@ export const downloadContent = (token: string | null) => (dispatch: any) => {
 
 export const sendFile = (filename: string, ser: string) => async (dispatch: any, getState: any) => {
     const state = getState();
-    const token = getToken(state);
     const username = getUsername(state);
-    const response = await diagramAPI.sendFile(token, username, filename, ser);
+    const response = await diagramAPI.sendFile(username, filename, ser);
     if (response && response.status === 201) {
         dispatch(setFile(response.data));
     } else {
