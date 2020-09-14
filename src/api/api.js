@@ -5,17 +5,17 @@ const TOKEN_AUTH = 'REACT_TOKEN_AUTH';
 const USERNAME = 'REACT_USERNAME';
 
 // const baseURL = 'http://31.134.153.18/';
-// const baseURL = 'http://31.134.153.18:8000/';
-const baseURL = 'http://127.0.0.1:8000/';
+const baseURL = 'http://31.134.153.18:8000/';
+// const baseURL = 'http://127.0.0.1:8000/';
 
-// axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
-// axios.defaults.xsrfCookieName = "csrftoken";
+axios.defaults.xsrfHeaderName = "X-CSRFTOKEN";
+axios.defaults.xsrfCookieName = "csrftoken";
 
 const instance = axios.create({ 
     baseURL: baseURL,
     withCredentials: true,
-    // xsrfCookieName: 'csrftoken',
-    // xsrfHeaderName: 'X-CSRFTOKEN',
+    xsrfCookieName: 'csrftoken',
+    xsrfHeaderName: 'X-CSRFTOKEN',
     timeout: 10000,
     // transformRequest: [(data) => JSON.stringify(data.data)],
     headers: {
