@@ -45,12 +45,13 @@ export const setUsername = (username: string | null): SetUsernameActionType => (
 
 
 export const getAutoAuth = () => (dispatch: any) => {
-    const username = authAPI.authMe();
-    if (username) {
-        dispatch(setAuth(true));
-        dispatch(setUsername(username));
-        dispatch(downloadContent());
-    }
+    authAPI.authMe().then((response: any) => {
+        if (response) {
+            dispatch(setAuth(true));
+            dispatch(setUsername(response.data.username));
+            dispatch(downloadContent());
+        }
+    })
 }
 
 export const onLogIn = (username: string, password: string) =>  (dispatch: any) => {
@@ -62,9 +63,12 @@ export const onLogIn = (username: string, password: string) =>  (dispatch: any) 
 }
 
 export const onLogOut = () => (dispatch: any) => {
-    authAPI.logout();
-    dispatch(setUsername(null));
-    dispatch(setAuth(false));
+    authAPI.logout().then((response: any) => {
+        if (response && response.status === 200) {
+            dispatch(setUsername(null));
+            dispatch(setAuth(false));
+        }
+    });
 }
 
 

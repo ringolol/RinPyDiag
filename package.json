@@ -21,6 +21,7 @@
     "bootstrap": "^4.5.2",
     "closest": "^0.0.1",
     "dagre": "^0.8.5",
+    "js-cookie": "^2.2.1",
     "lodash": "^4.17.20",
     "ml-matrix": "^6.5.1",
     "pathfinding": "^0.4.18",
