@@ -1,9 +1,21 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
 
-export interface DemoCanvasWidgetProps {
+export interface CanvasProps {
 	color?: string;
 	background?: string;
+}
+
+export class Canvas extends React.Component<CanvasProps> {
+	render() {
+		return (
+			<Container
+				background={this.props.background || 'rgb(60, 60, 60)'}
+				color={this.props.color || 'rgba(255,255,255, 0.05)'}>
+				{this.props.children}
+			</Container>
+		);
+	}
 }
 
 export const Container = styled.div<{ color: string; background: string }>`
@@ -42,15 +54,3 @@ export const Container = styled.div<{ color: string; background: string }>`
 			transparent
 		);
 `;
-
-export class DemoCanvasWidget extends React.Component<DemoCanvasWidgetProps> {
-	render() {
-		return (
-			<Container
-				background={this.props.background || 'rgb(60, 60, 60)'}
-				color={this.props.color || 'rgba(255,255,255, 0.05)'}>
-				{this.props.children}
-			</Container>
-		);
-	}
-}
