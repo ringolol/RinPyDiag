@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { PropsType } from './LoginContainer';
+import { NavLink } from 'react-router-dom';
 
 const Login: React.FC<PropsType> = (props) => {
     const [login, setLogin] = useState<string>('');
@@ -15,6 +16,10 @@ const Login: React.FC<PropsType> = (props) => {
     }
     const onLogIn = () => {
         props.onLogIn(login, password);
+    }
+
+    const setRegister = () => {
+        props.setRegister(false);
     }
 
     const pressEnter = (event: any) => {
@@ -45,6 +50,7 @@ const Login: React.FC<PropsType> = (props) => {
                         variant="primary"
                         onClick={ onLogIn }
                         >Log in</Button>
+                    <NavLink to="/register" onClick={ setRegister }>Register</NavLink>
                 </Form>
             </Container>
         </Wrapper>

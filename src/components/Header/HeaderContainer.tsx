@@ -7,6 +7,7 @@ import { AppStateType } from '../../redux/store';
 import { sendFile } from '../../redux/diagram_reducer';
 import { getDiagramApp } from '../../redux/app_selectors';
 import { getIsMount } from '../../redux/diagram_selectors';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 
 type MapStatePropsType = {
@@ -39,5 +40,6 @@ export default compose(
     connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, { 
     onLogOut, 
     sendFile
-    })
+    }),
+    withAuthRedirect
 )(HeaderContainer);

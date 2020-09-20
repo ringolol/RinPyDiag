@@ -13,6 +13,7 @@ import { BloksType, FilesType } from '../../types/types';
 import { getIsAuth } from '../../redux/auth_selectors';
 import { compose } from 'redux';
 import { getDiagramApp } from '../../redux/app_selectors';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 
 type MapStatePropsType = {
     blocks: Array<BloksType>
@@ -29,6 +30,7 @@ type MapDispatchPropsType = {
     setIsMount: (isMounted: boolean) => SetIsMountActionType
 }
 type OwnPropsType = {
+
 }
 export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 
@@ -57,10 +59,13 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
 
 
 export default compose(
-    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
-    setFileName, 
-    downloadContent,
-    sendFile, 
-    setIsMount
-    })
+    compose(
+        connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+        setFileName, 
+        downloadContent,
+        sendFile, 
+        setIsMount
+        }),
+        withAuthRedirect
+    )
 )(DiagramContainer);
