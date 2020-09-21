@@ -6,6 +6,7 @@ import { AppStateType } from './store';
 const SET_AUTH = 'auth/SET_AUTH';
 const SET_USERNAME = 'auth/SET_USERNAME';
 const SET_REGISTER = 'auth/SET_REGISTER';
+const TOGGLE_IS_FETCHING = 'auth/TOGGLE_IS_FETCHING';
 
 let initialState = {
     isAuth: false as boolean,
@@ -36,13 +37,19 @@ const authReducer = (state = initialState, action: ActionsTypes): InitialStateTy
                 username: action.username,
             }
         }
+        case TOGGLE_IS_FETCHING: {
+            return {
+                ...state,
+                isFetching: action.isFetching,
+            }
+        }
         default:
             return state;
     }  
 }
 
 // actions
-type ActionsTypes = SetAuthActionType | SetUsernameActionType | SetRegisterActionType;
+type ActionsTypes = SetAuthActionType | SetUsernameActionType | SetRegisterActionType | ToggleIsFetchingActionType;
 type SetAuthActionType = {
     type: typeof SET_AUTH
     isAuth: boolean
@@ -58,6 +65,11 @@ export type SetUsernameActionType = {
     username: string | null
 }
 export const setUsername = (username: string | null): SetUsernameActionType => ({ type: SET_USERNAME, username });
+type ToggleIsFetchingActionType = {
+    type: typeof TOGGLE_IS_FETCHING
+    isFetching: boolean
+}
+export const toggleIsFetching = (isFetching: boolean): ToggleIsFetchingActionType => ({ type: TOGGLE_IS_FETCHING, isFetching })
 
 // Thunks
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
@@ -72,20 +84,24 @@ export const getAutoAuth = (): ThunkType => async (dispatch) => {
 }
 
 export const onLogIn = (username: string, password: string): ThunkType => async (dispatch) => {
-    authAPI.login(username, password).then((response) => {
-        response && response.status === 200
-        ? dispatch(getAutoAuth())
-        : console.log(response);
-    })
+    dispatch(toggleIsFetching(false));
+    const response = await authAPI.login(username, password);
+    if (response && response.status === 200) {
+        await dispatch(getAutoAuth())
+    } else {
+        console.log(response);
+    }
+    dispatch(toggleIsFetching(true));
 }
 
 export const onLogOut = (): ThunkType => async (dispatch) => {
-    authAPI.logout().then((response) => {
-        if (response && response.status === 200) {
-            dispatch(setUsername(null));
-            dispatch(setAuth(false));
-        }
-    });
+    dispatch(toggleIsFetching(false));
+    const response = await authAPI.logout();
+    if (response && response.status === 200) {
+        dispatch(setUsername(null));
+        dispatch(setAuth(false));
+    }
+    dispatch(toggleIsFetching(true));
 }
 
 export const register = (
@@ -96,12 +112,14 @@ export const register = (
     last_name?: string,
     email?: string
 ): ThunkType => async (dispatch) => {
+    dispatch(toggleIsFetching(false));
     const response = await authAPI.register(
         username, password, password_confirm, first_name, last_name, email
     )
     if (response && response.status === 201) {
         dispatch(setRegister(true));
     }
+    dispatch(toggleIsFetching(true));
 }
 
 

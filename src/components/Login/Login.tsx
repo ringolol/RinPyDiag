@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { PropsType } from './LoginContainer';
 import { NavLink } from 'react-router-dom';
+import ButtonPreloader from '../common/Preloader/ButtonPreloader';
 
 const Login: React.FC<PropsType> = (props) => {
     const [login, setLogin] = useState<string>('');
@@ -45,11 +46,14 @@ const Login: React.FC<PropsType> = (props) => {
                     <Form.Group controlId='fromBasicCheckbox'>
                         <Form.Check type='checkbox' label='Remeber me' />
                     </Form.Group>
-                    <Button
-                        className='float-right'  
-                        variant="primary"
-                        onClick={ onLogIn }
-                        >Log in</Button>
+                    { props.isFetching
+                        ?  <Button
+                            className='float-right'  
+                            variant="primary"
+                            onClick={ onLogIn }
+                            >Log in</Button>
+                        :   <ButtonPreloader className='float-right' />}
+                    
                     <NavLink to="/register" onClick={ setRegister }>Register</NavLink>
                 </Form>
             </Container>

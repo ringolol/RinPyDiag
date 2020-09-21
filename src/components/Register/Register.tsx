@@ -2,6 +2,7 @@ import styled from '@emotion/styled';
 import React, { useState } from 'react';
 import { Container, Form, Button } from 'react-bootstrap';
 import { NavLink } from 'react-router-dom';
+import ButtonPreloader from '../common/Preloader/ButtonPreloader';
 import { PropsType } from './RegisterContainer';
 
 
@@ -53,11 +54,13 @@ const Register: React.FC<PropsType> = (props) => {
                             value={ passwordConfirm } required />
                         <Form.Text className='text-muted' >Don't share your password with anyone</Form.Text>
                     </Form.Group>
-                    <Button
+                    { props.isFetching
+                        ? <Button
                         className='float-right'  
                         variant="primary"
                         onClick={ register }
                         >Register</Button>
+                        : <ButtonPreloader className='float-right' /> }
                     <NavLink to="/login" >Login</NavLink>
                 </Form>
             </Container>

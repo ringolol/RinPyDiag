@@ -3,11 +3,12 @@ import { connect } from 'react-redux';
 import Login from './Login';
 import { onLogIn, setRegister, SetRegisterActionType } from '../../redux/auth_reducer';
 import { AppStateType } from '../../redux/store';
-import { getIsAuth } from '../../redux/auth_selectors';
+import { getIsAuth, getIsFetching } from '../../redux/auth_selectors';
 import { Redirect } from 'react-router-dom';
 
 type MapStatePropsType = {
     isAuth: boolean
+    isFetching: boolean
 }
 type MapDispatchPropsType = {
     onLogIn: (login: string, password: string) => void
@@ -23,7 +24,8 @@ const LoginContainer: React.FC<PropsType> = (props) => {
 }
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
-    isAuth: getIsAuth(state)
+    isAuth: getIsAuth(state),
+    isFetching: getIsFetching(state)
 }) 
 
 

@@ -8,11 +8,13 @@ import { sendFile } from '../../redux/diagram_reducer';
 import { getDiagramApp } from '../../redux/app_selectors';
 import { getIsMount } from '../../redux/diagram_selectors';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { getIsFetching } from '../../redux/auth_selectors';
 
 
 type MapStatePropsType = {
     diagramApp: any
     isMounted: boolean
+    isFetching: boolean
 }
 type MapDispatchPropsType = {
     onLogOut: () => void
@@ -32,7 +34,8 @@ const HeaderContainer: React.FC<PropsType> = (props) => {
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     diagramApp: getDiagramApp(state),
-    isMounted: getIsMount(state)
+    isMounted: getIsMount(state),
+    isFetching: getIsFetching(state)
 }) 
 
 
