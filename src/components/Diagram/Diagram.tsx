@@ -1,5 +1,4 @@
 import React from 'react';
-import * as _ from 'lodash';
 import { TrayWidget } from './Tray/TrayWidget';
 import { TrayItemWidget, FileExplorer } from './Tray/TrayItemWidget';
 import { DefaultNodeModel } from '@projectstorm/react-diagrams';
@@ -8,6 +7,7 @@ import { Canvas } from './Canvas/Canvas';
 import styled from '@emotion/styled';
 import { PropsType } from './DiagramContainer';
 import { BloksType, FilesType } from '../../types/types';
+import Preloader from '../common/Preloader/Preloader';
 
 
 class Diagram extends React.Component<PropsType> {
@@ -38,7 +38,9 @@ class Diagram extends React.Component<PropsType> {
 				<Content>
 					<TrayWidget>
 						<Title> Blocks:</Title>
-						<Blocks blocks={ this.props.blocks } />
+						{ this.props.isLoaded
+							? <Blocks blocks={ this.props.blocks } />
+							: <Preloader color='#b1aaaa' /> }
 					</TrayWidget>
 					<Layer onDrop={ this.onDrop } onDragOver={ this.onDragOver }>
 						<Canvas>
@@ -47,7 +49,9 @@ class Diagram extends React.Component<PropsType> {
 					</Layer>
 					<TrayWidget>
 						<Title>Files:</Title>
-						<Files diagramApp={ this.props.diagramApp } files={ this.props.files }/>
+						{ this.props.isLoaded
+							? <Files diagramApp={ this.props.diagramApp } files={ this.props.files }/>
+							: <Preloader color='#b1aaaa' /> }
 					</TrayWidget>
 				</Content>
 			</Body>

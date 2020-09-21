@@ -19,7 +19,7 @@ export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 
 const LoginContainer: React.FC<PropsType> = (props) => {
     if (!props.isAuth) return <Login {...props} />
-    return <Redirect to='widget' />
+    return <Redirect to='diagram' />
 }
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({

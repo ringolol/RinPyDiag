@@ -63,13 +63,12 @@ export const setUsername = (username: string | null): SetUsernameActionType => (
 type ThunkType = ThunkAction<Promise<void>, AppStateType, unknown, ActionsTypes>;
 
 export const getAutoAuth = (): ThunkType => async (dispatch) => {
-    authAPI.authMe().then((response) => {
-        if (response) {
-            dispatch(setAuth(true));
-            dispatch(setUsername(response.data.username));
-            dispatch(downloadContent());
-        }
-    })
+    const response = await authAPI.authMe();
+    if (response) {
+        dispatch(setAuth(true));
+        dispatch(setUsername(response.data.username));
+        dispatch(downloadContent());
+    }
 }
 
 export const onLogIn = (username: string, password: string): ThunkType => async (dispatch) => {
