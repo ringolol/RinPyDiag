@@ -1,18 +1,16 @@
-import * as axios from 'axios';
-import { register } from '../serviceWorker';
+import axios from 'axios';
 import { errorsLog } from '../utils/logs/errorsLog';
+// config API
+const baseURL = 'https://31.134.153.18/'; // http://127.0.0.1:8000/ |  https://31.134.153.18/
 
-const baseURL = 'https://31.134.153.18/';
-// const baseURL = 'http://127.0.0.1:8000/';
-
-// axios.defaults.xsrfHeaderName = "X-CSRFToken";
-// axios.defaults.xsrfCookieName = "csrftoken";
+// axios.defaults.xsrfHeaderName = "X-CSRFToken";  // delete this ?
+// axios.defaults.xsrfCookieName = "csrftoken";  // delete this ?
 
 const instance = axios.create({ 
     baseURL: baseURL,
     withCredentials: true,
-    // xsrfCookieName: 'csrftoken',
-    // xsrfHeaderName: 'X-CSRFToken',
+    // xsrfCookieName: 'csrftoken',  // delete this ?
+    // xsrfHeaderName: 'X-CSRFToken',  // delete this ?
     timeout: 10000,
     headers: {
         'Accept': 'application/json',
@@ -21,42 +19,54 @@ const instance = axios.create({
 });
 
 // API
+type AuthMeType = {
+    id: number
+    username: string
+    first_name: string
+    last_name: string
+    email: string
+}
+type LoginType = {
+    detail: string
+}
+type LogoutType = LoginType;
+type RegisterType = {
+    detail: string
+}
 export const authAPI = {
     authMe() {
-        return instance.get('/api/v1/accounts/profile/', {})
+        return instance.get<AuthMeType>('/api/v1/accounts/profile/', {})
         .then(response => {
             console.log(response);
-            return response })
-        .catch(error => {
+            return response 
+        }).catch(error => {
             console.log(error)
             return null
         })
     },
-    login(username, password) {
-        return instance.post('/api/v1/accounts/login/', {
+    login(username: string, password: string) {
+        return instance.post<LoginType>('/api/v1/accounts/login/', {
             login: username,
             password: password,
-        }, {})
-        .then(response => {
-            console.log(response);
-            return response })
-        .catch(error => {
+        }, {}).catch(error => {
             console.log(error)
         })
     },
     logout() {
-        return instance.post('/api/v1/accounts/logout/', {
+        return instance.post<LogoutType>('/api/v1/accounts/logout/', {
             revoke_token: true,
-        }, {})
-        .then(response => {
-            console.log(response);
-            return response })
-        .catch(error => {
+        }, {}).catch(error => {
             console.log(error)
         })
     },
-    register(username, password, password_confirm, first_name="", last_name="", email="") {
-        return instance.post('/api/v1/accounts/register/', {
+    register(
+        username: string, 
+        password: string, 
+        password_confirm: string, 
+        first_name = "" as string, 
+        last_name = "" as string, 
+        email = "" as string) {
+        return instance.post<RegisterType>('/api/v1/accounts/register/', {
             username,
             first_name,
             last_name,
@@ -74,7 +84,7 @@ export const authAPI = {
 };
 
 export const diagramAPI = {
-    sendFile(user, name, ser) {
+    sendFile(user: string | null, name: string, ser: string) {
         return instance.post('/diagram/api/files/', {
             user, name, ser
         }, {})
