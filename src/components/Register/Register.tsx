@@ -41,7 +41,7 @@ const Register: React.FC<PropsType> = (props) => {
                     <Form.Group controlId='formUsername'>
                         <Form.Control type='text' placeholder='Enter the username' 
                             onChange={ onLoginChange } onKeyPress={ pressEnter } 
-                            value={ username } required />
+                            value={ username } />
                     </Form.Group>
                     <Form.Group controlId='formPassword'>
                         <Form.Control type='password' placeholder='Enter password'

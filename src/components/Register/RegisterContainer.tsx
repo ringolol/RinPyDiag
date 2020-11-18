@@ -1,7 +1,7 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { AppStateType } from '../../redux/store';
-import { getIsFetching, getIsRegistered } from '../../redux/auth_selectors';
+import { getAuthIsFetching, getIsRegistered } from '../../redux/auth_selectors';
 import Register from './Register';
 import { register } from '../../redux/auth_reducer';
 import LoginContainer from '../Login/LoginContainer';
@@ -29,7 +29,7 @@ const RegisterContainer: React.FC<PropsType> = (props) => {
 
 const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
     isRegistered: getIsRegistered(state),
-    isFetching: getIsFetching(state)
+    isFetching: getAuthIsFetching(state)
 }) 
 
 
