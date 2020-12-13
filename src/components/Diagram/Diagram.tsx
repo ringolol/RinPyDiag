@@ -34,8 +34,10 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 	onDrop = (event: any) => {
 		const data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
 		let node: ExtendedNodeMode = new DefaultNodeModel(data.block.name, 'rgb(150,150,150)') as ExtendedNodeMode;
-    node.parameters = Object.assign({}, data.block.pars);
-		node.states = Object.assign({}, data.block.states); 
+    node.getOptions().extras = {};
+    node.getOptions().extras.parameters = Object.assign({}, data.block.pars);
+    node.getOptions().extras.states = Object.assign({}, data.block.states);
+    
 		for (let i = 0; i < data.block.inpN; i++) {
 			node.addInPort('In_' + i);
 		}
@@ -60,8 +62,8 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 		let node: ExtendedNodeMode = this.props.diagramApp.getDiagramEngine().getMouseElement(event) as ExtendedNodeMode;
 		this.setState({
 			selectedNode: node,
-			selectedNodesPars: Object.assign({}, node.parameters),
-			selectedNodesStates: Object.assign({}, node.states),
+			selectedNodesPars: Object.assign({}, node.getOptions().extras.parameters),
+			selectedNodesStates: Object.assign({}, node.getOptions().extras.states),
     });
     node.setSelected(false);
 	}
@@ -81,8 +83,8 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
   applyPars = (event: any) => {
     let node = this.state.selectedNode;
     // is it okay?
-    node.parameters = this.state.selectedNodesPars;
-    node.states = this.state.selectedNodesStates;
+    node.getOptions().extras.parameters = this.state.selectedNodesPars;
+    node.getOptions().extras.states = this.state.selectedNodesStates;
     this.deselectNode();
   }
 
