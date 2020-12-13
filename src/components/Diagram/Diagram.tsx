@@ -1,7 +1,7 @@
 import React from 'react';
 import { TrayWidget } from './Tray/TrayWidget';
 import { TrayItemWidget, FileExplorer } from './Tray/TrayItemWidget';
-import { DefaultNodeModel } from '@projectstorm/react-diagrams';
+import { DefaultNodeModel, DefaultNodeModelGenerics, NodeModel, NodeModelGenerics } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { Canvas } from './Canvas/Canvas';
 import styled from '@emotion/styled';
@@ -13,13 +13,27 @@ import { Button } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
-import { exception } from 'console';
+import { DeserializeEvent } from '@projectstorm/react-canvas-core';
 
-type ExtendedNodeMode  = DefaultNodeModel & {
-	parameters: any | undefined,
-	states: any | undefined,
+class ExtendedNode extends DefaultNodeModel {
+	parameters: any;
+	states: any;
+
+	serialize(): any {
+		return {
+			...super.serialize(), 
+			parameters: this.parameters,
+			states: this.states,
+			lol: 'lol',
+		};
+	}
+
+	deserialize(event: DeserializeEvent<this>): void {
+		super.deserialize(event);
+		this.parameters = event.data.parameters;
+		this.states = event.data.states;
+	}
 }
-
 
 class Diagram extends React.Component<PropsType,StatesTypes> {
 	constructor(props: any) {
@@ -33,11 +47,10 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 
 	onDrop = (event: any) => {
 		const data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
-		let node: ExtendedNodeMode = new DefaultNodeModel(data.block.name, 'rgb(150,150,150)') as ExtendedNodeMode;
-    node.getOptions().extras = {};
-    node.getOptions().extras.parameters = Object.assign({}, data.block.pars);
-    node.getOptions().extras.states = Object.assign({}, data.block.states);
-    
+		let node: ExtendedNode = new ExtendedNode(data.block.name, 'rgb(150,150,150)');
+		node.parameters = Object.assign({}, data.block.pars);
+		node.states = Object.assign({}, data.block.states);
+
 		for (let i = 0; i < data.block.inpN; i++) {
 			node.addInPort('In_' + i);
 		}
@@ -48,6 +61,7 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 		node.setPosition(point);
 		this.props.diagramApp.getDiagramEngine().getModel().addNode(node);
 		this.forceUpdate();
+		console.log(this.props.diagramApp.getSerialized());
 	}
 
 	onDragOver = (event: any) => {
@@ -59,11 +73,11 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 	}
 
 	onDoubleClick = (event: any) => {
-		let node: ExtendedNodeMode = this.props.diagramApp.getDiagramEngine().getMouseElement(event) as ExtendedNodeMode;
+		let node: ExtendedNode = this.props.diagramApp.getDiagramEngine().getMouseElement(event);
 		this.setState({
 			selectedNode: node,
-			selectedNodesPars: Object.assign({}, node.getOptions().extras.parameters),
-			selectedNodesStates: Object.assign({}, node.getOptions().extras.states),
+			selectedNodesPars: Object.assign({}, node.parameters),
+			selectedNodesStates: Object.assign({}, node.states),
     });
     node.setSelected(false);
 	}
@@ -83,8 +97,8 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
   applyPars = (event: any) => {
     let node = this.state.selectedNode;
     // is it okay?
-    node.getOptions().extras.parameters = this.state.selectedNodesPars;
-    node.getOptions().extras.states = this.state.selectedNodesStates;
+    node.parameters = this.state.selectedNodesPars;
+    node.states = this.state.selectedNodesStates;
     this.deselectNode();
   }
 
@@ -187,7 +201,7 @@ const Files = (props: any) => {
 		props.files.map((file: FilesType) => (
 			<FileExplorer
 				key={ file.name } ser={ file.ser } name={ file.name }
-				app={ props.diagramApp }color="rgb(150,150,150)" />
+				app={ props.diagramApp } color="rgb(150,150,150)" />
 		))
 	)
 }
