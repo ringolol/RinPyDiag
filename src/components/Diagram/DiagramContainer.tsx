@@ -29,6 +29,11 @@ type MapDispatchPropsType = {
     downloadContent: () => void
     setIsMount: (isMounted: boolean) => SetIsMountActionType
 }
+export type StatesTypes = {
+    selectedNode: any,
+    selectedNodesPars: any,
+    selectedNodesStates: any,
+}
 type OwnPropsType = {
 
 }
