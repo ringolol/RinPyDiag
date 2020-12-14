@@ -3,6 +3,7 @@ import { Nav, Navbar, Button, Container, Modal, Form } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import styled from '@emotion/styled';
 import { PropsType } from './HeaderContainer';
+import ButtonPreloader from '../common/Preloader/ButtonPreloader';
 
 
 const Header: React.FC<PropsType> = (props) => {
@@ -42,7 +43,7 @@ const Header: React.FC<PropsType> = (props) => {
                         <Navbar.Collapse id="responsive-navbar-nav">
                         <Nav className="mr-auto">
                             <LinkWrapper>
-                                <Link to="/widget">Diagram</Link>
+                                <Link to="/diagram">Diagram</Link>
                                 <Link to="/about">About</Link>
                             </LinkWrapper>
                         </Nav>
@@ -54,7 +55,9 @@ const Header: React.FC<PropsType> = (props) => {
                                     className="mr-2"
                                     onClick={ handleShow }>Save File</Button>
                             }
-                            <Button variant="primary" onClick={ onLogOut }>Logout</Button>
+                            {   props.isFetching
+                                ? <Button variant="primary" onClick={ onLogOut }>Logout</Button>
+                                : <ButtonPreloader />}
                         </Nav>
                         </Navbar.Collapse>
                     </Container>

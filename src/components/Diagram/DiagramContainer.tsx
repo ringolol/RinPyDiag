@@ -13,6 +13,9 @@ import { BloksType, FilesType } from '../../types/types';
 import { getIsAuth } from '../../redux/auth_selectors';
 import { compose } from 'redux';
 import { getDiagramApp } from '../../redux/app_selectors';
+import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { DiagApplication } from '../../diagram_engine/diagram_app';
+import { DiagNodeModel } from './Node/DiagNodeModel';
 
 type MapStatePropsType = {
     blocks: Array<BloksType>
@@ -20,7 +23,7 @@ type MapStatePropsType = {
     isLoaded: boolean
     filename: string
     isAuth: boolean
-    diagramApp: any
+    diagramApp: DiagApplication
 }
 type MapDispatchPropsType = {
     setFileName: (filename: string) => SetFileNameActionType 
@@ -28,7 +31,21 @@ type MapDispatchPropsType = {
     downloadContent: () => void
     setIsMount: (isMounted: boolean) => SetIsMountActionType
 }
+export type StatesTypes = {
+    selectedNode: DiagNodeModel | null,
+    showParModal: boolean,
+}
 type OwnPropsType = {
+
+}
+export type ParModalStatesTypes = {
+    selectedNodesPars: any,
+    selectedNodesStates: any,
+}
+export type ParModalPropsTypes = {
+    selectedNode: DiagNodeModel | null,
+    show: boolean,
+    onClose: any,
 }
 export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 
@@ -57,10 +74,13 @@ const mapStateToProps = (state: AppStateType): MapStatePropsType => ({
 
 
 export default compose(
-    connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
-    setFileName, 
-    downloadContent,
-    sendFile, 
-    setIsMount
-    })
+    compose(
+        connect<MapStatePropsType, MapDispatchPropsType, OwnPropsType, AppStateType>(mapStateToProps, {
+        setFileName, 
+        downloadContent,
+        sendFile, 
+        setIsMount
+        }),
+        withAuthRedirect
+    )
 )(DiagramContainer);

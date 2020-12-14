@@ -1,5 +1,7 @@
 import * as React from 'react';
 import styled from '@emotion/styled';
+import { DiagApplication } from '../../../diagram_engine/diagram_app';
+
 
 export interface TrayItemWidgetProps {
 	model: any;
@@ -11,7 +13,7 @@ export interface FileExplorerWidgetProps {
 	ser: any;
 	color?: string;
 	name: string;
-	app: any;
+	app: DiagApplication;
 }
 
 
