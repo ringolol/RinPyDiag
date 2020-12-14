@@ -48,7 +48,9 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 	}
 
 	onDoubleClick = (event: any) => {
-		let node: DiagNodeModel = this.props.diagramApp.getDiagramEngine().getMouseElement(event) as DiagNodeModel;
+        let base = this.props.diagramApp.getDiagramEngine().getMouseElement(event);
+        if(!base || base.getType() !== 'diag') return;
+        let node: DiagNodeModel = base as DiagNodeModel;
 		this.setState({
             selectedNode: node,
             showParModal: true,
@@ -132,7 +134,6 @@ const ModalFields = (props: any) => {
 class ParModal extends React.Component<ParModalPropsTypes,ParModalStatesTypes> {
     constructor(props: any) {
         super(props);
-        console.log(this.props.selectedNode);
         this.state = {
             selectedNodesPars: Object.assign({}, this.props.selectedNode?.getOptions().parameters),
             selectedNodesStates: Object.assign({}, this.props.selectedNode?.getOptions().states),
@@ -153,8 +154,8 @@ class ParModal extends React.Component<ParModalPropsTypes,ParModalStatesTypes> {
 
     applyPars = (event: any) => {
         let node = this.props.selectedNode;
-        node.getOptions().parameters = this.state.selectedNodesPars;
-        node.getOptions().states = this.state.selectedNodesStates;
+        node!.getOptions().parameters = this.state.selectedNodesPars!;
+        node!.getOptions().states = this.state.selectedNodesStates!;
         this.deselectNode();
     }
 
@@ -166,8 +167,7 @@ class ParModal extends React.Component<ParModalPropsTypes,ParModalStatesTypes> {
         this.props.onClose();
     }
 
-    render() {
-        
+    render() { 
         return (
             <Modal show={ this.props.show } 
                 onHide = { this.deselectNode } 
@@ -175,7 +175,7 @@ class ParModal extends React.Component<ParModalPropsTypes,ParModalStatesTypes> {
             >
                 <Modal.Header closeButton>
                     <Modal.Title>
-                        { this.props.selectedNode?.options?.name }
+                        { this.props.selectedNode?.getOptions()?.name }
                     </Modal.Title>
                 </Modal.Header>
 

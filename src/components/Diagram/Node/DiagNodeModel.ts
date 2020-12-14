@@ -135,6 +135,5 @@ export class DiagNodeModel extends NodeModel<DiagNodeModelGenerics> {
 		
 		this.options.parameters = event.data.parameters;
 		this.options.states = event.data.states;
-		console.log(event);
 	}
 }

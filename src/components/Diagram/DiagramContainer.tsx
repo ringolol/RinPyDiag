@@ -15,6 +15,7 @@ import { compose } from 'redux';
 import { getDiagramApp } from '../../redux/app_selectors';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
 import { DiagApplication } from '../../diagram_engine/diagram_app';
+import { DiagNodeModel } from './Node/DiagNodeModel';
 
 type MapStatePropsType = {
     blocks: Array<BloksType>
@@ -31,8 +32,8 @@ type MapDispatchPropsType = {
     setIsMount: (isMounted: boolean) => SetIsMountActionType
 }
 export type StatesTypes = {
-    selectedNode: any,
-    showParModal: any,
+    selectedNode: DiagNodeModel | null,
+    showParModal: boolean,
 }
 type OwnPropsType = {
 
@@ -42,8 +43,8 @@ export type ParModalStatesTypes = {
     selectedNodesStates: any,
 }
 export type ParModalPropsTypes = {
-    selectedNode: any,
-    show: any,
+    selectedNode: DiagNodeModel | null,
+    show: boolean,
     onClose: any,
 }
 export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
