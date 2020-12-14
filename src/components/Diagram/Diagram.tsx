@@ -85,7 +85,7 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
             <ParModal key={this.state.selectedNode?.getID()} 
                 selectedNode={this.state.selectedNode} 
                 show={this.state.showParModal} 
-                onClose={() => {this.setState({showParModal: false})}}/>
+                onClose={() => {this.setState({showParModal: false, selectedNode: null})}}/>
 			</>
 		);
 	}
