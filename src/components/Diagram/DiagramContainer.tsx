@@ -14,6 +14,7 @@ import { getIsAuth } from '../../redux/auth_selectors';
 import { compose } from 'redux';
 import { getDiagramApp } from '../../redux/app_selectors';
 import { withAuthRedirect } from '../../hoc/withAuthRedirect';
+import { DiagApplication } from '../../diagram_engine/diagram_app';
 
 type MapStatePropsType = {
     blocks: Array<BloksType>
@@ -21,7 +22,7 @@ type MapStatePropsType = {
     isLoaded: boolean
     filename: string
     isAuth: boolean
-    diagramApp: any
+    diagramApp: DiagApplication
 }
 type MapDispatchPropsType = {
     setFileName: (filename: string) => SetFileNameActionType 
@@ -31,11 +32,19 @@ type MapDispatchPropsType = {
 }
 export type StatesTypes = {
     selectedNode: any,
-    selectedNodesPars: any,
-    selectedNodesStates: any,
+    showParModal: any,
 }
 type OwnPropsType = {
 
+}
+export type ParModalStatesTypes = {
+    selectedNodesPars: any,
+    selectedNodesStates: any,
+}
+export type ParModalPropsTypes = {
+    selectedNode: any,
+    show: any,
+    onClose: any,
 }
 export type PropsType = MapStatePropsType & MapDispatchPropsType & OwnPropsType;
 

@@ -7,7 +7,7 @@ const SET_DIAGRAM_APP = 'app/SET_DIAGRAM_APP';
 const SET_INITIALIZATION = 'app/SET_INITIALIZATION';
 
 let initialState = {
-    diagramApp: null as any,
+    diagramApp: null as unknown as DiagApplication,
     isInitialized: false as boolean
 };
 export type InitialStateType = typeof initialState;
@@ -35,9 +35,9 @@ const appReducer = (state = initialState, action: ActionsTypes): InitialStateTyp
 type ActionsTypes = SetDiagramAppActionType | SetInitializationSuccessActionType;
 type SetDiagramAppActionType = {
     type: typeof SET_DIAGRAM_APP
-    diagramApp: any
+    diagramApp: DiagApplication
 }
-export const setDiagramApp = (diagramApp: any): SetDiagramAppActionType => ({ type: SET_DIAGRAM_APP, diagramApp });
+export const setDiagramApp = (diagramApp: DiagApplication): SetDiagramAppActionType => ({ type: SET_DIAGRAM_APP, diagramApp });
 type SetInitializationSuccessActionType = {
     type: typeof SET_INITIALIZATION
     isInitialized: boolean

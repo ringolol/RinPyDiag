@@ -1,4 +1,5 @@
 import * as SRD from '@projectstorm/react-diagrams';
+import { DiagNodeFactory } from '../components/Diagram/Node/DiagNodeFactory';
 
 /**
  * @author Dylan Vorster
@@ -9,6 +10,8 @@ export class DiagApplication {
 
 	constructor() {
 		this.diagramEngine = SRD.default();
+		this.diagramEngine.getNodeFactories()
+			.registerFactory(new DiagNodeFactory());
 		this.activeModel = new SRD.DiagramModel();
 		this.diagramEngine.setModel(this.activeModel);
 	}

@@ -1,11 +1,10 @@
 import React from 'react';
 import { TrayWidget } from './Tray/TrayWidget';
 import { TrayItemWidget, FileExplorer } from './Tray/TrayItemWidget';
-import { DefaultNodeModel, DefaultNodeModelGenerics, NodeModel, NodeModelGenerics } from '@projectstorm/react-diagrams';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { Canvas } from './Canvas/Canvas';
 import styled from '@emotion/styled';
-import { PropsType, StatesTypes } from './DiagramContainer';
+import { ParModalPropsTypes, ParModalStatesTypes, PropsType, StatesTypes } from './DiagramContainer';
 import { BloksType, FilesType } from '../../types/types';
 import Preloader from '../common/Preloader/Preloader';
 import { Modal } from 'react-bootstrap';
@@ -13,43 +12,24 @@ import { Button } from 'react-bootstrap';
 import { Form } from 'react-bootstrap';
 import { Col } from 'react-bootstrap';
 import { Row } from 'react-bootstrap';
-import { DeserializeEvent } from '@projectstorm/react-canvas-core';
+import { DiagNodeModel } from './Node/DiagNodeModel';
 
-class ExtendedNode extends DefaultNodeModel {
-	parameters: any;
-	states: any;
-
-	serialize(): any {
-		return {
-			...super.serialize(), 
-			parameters: this.parameters,
-			states: this.states,
-			lol: 'lol',
-		};
-	}
-
-	deserialize(event: DeserializeEvent<this>): void {
-		super.deserialize(event);
-		this.parameters = event.data.parameters;
-		this.states = event.data.states;
-	}
-}
 
 class Diagram extends React.Component<PropsType,StatesTypes> {
-	constructor(props: any) {
+	constructor(props: PropsType) {
 		super(props);
 		this.state = {
 			selectedNode: null,
-			selectedNodesPars: null,
-			selectedNodesStates: null,
+            showParModal: false,
 		}
 	}
 
 	onDrop = (event: any) => {
 		const data = JSON.parse(event.dataTransfer.getData('storm-diagram-node'));
-		let node: ExtendedNode = new ExtendedNode(data.block.name, 'rgb(150,150,150)');
-		node.parameters = Object.assign({}, data.block.pars);
-		node.states = Object.assign({}, data.block.states);
+        let node: DiagNodeModel = new DiagNodeModel(data.block.name, 'rgb(150,150,150)');
+        
+		node.getOptions().parameters = Object.assign({}, data.block.pars);
+		node.getOptions().states = Object.assign({}, data.block.states);
 
 		for (let i = 0; i < data.block.inpN; i++) {
 			node.addInPort('In_' + i);
@@ -58,57 +38,23 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 			node.addOutPort('Out_' + i);
 		}
 		const point = this.props.diagramApp.getDiagramEngine().getRelativeMousePoint(event);
-		node.setPosition(point);
+        node.setPosition(point);
 		this.props.diagramApp.getDiagramEngine().getModel().addNode(node);
-		this.forceUpdate();
-		console.log(this.props.diagramApp.getSerialized());
+        this.forceUpdate();
 	}
 
 	onDragOver = (event: any) => {
 		event.preventDefault();
 	}
 
-	onParsModalClose = (event: any) => {
-		this.deselectNode();
-	}
-
 	onDoubleClick = (event: any) => {
-		let node: ExtendedNode = this.props.diagramApp.getDiagramEngine().getMouseElement(event);
+		let node: DiagNodeModel = this.props.diagramApp.getDiagramEngine().getMouseElement(event) as DiagNodeModel;
 		this.setState({
-			selectedNode: node,
-			selectedNodesPars: Object.assign({}, node.parameters),
-			selectedNodesStates: Object.assign({}, node.states),
-    });
-    node.setSelected(false);
+            selectedNode: node,
+            showParModal: true,
+        });
+        node.setSelected(false);
 	}
-  
-  onParChange = (name: any) => (event: any) => {
-    let pars = Object.assign({}, this.state.selectedNodesPars)
-    pars[name] = event.target.value;
-    this.setState({selectedNodesPars: pars});
-  }
-
-  onStateChange = (name: any) => (event: any) => {
-    let states = Object.assign({}, this.state.selectedNodesStates)
-    states[name] = event.target.value;
-    this.setState({selectedNodesStates: states});
-  }
-
-  applyPars = (event: any) => {
-    let node = this.state.selectedNode;
-    // is it okay?
-    node.parameters = this.state.selectedNodesPars;
-    node.states = this.state.selectedNodesStates;
-    this.deselectNode();
-  }
-
-  deselectNode = () => {
-    this.setState({
-      selectedNode: null,
-      selectedNodesPars: null,
-      selectedNodesStates: null,
-    });
-  }
   
 	render() {
 		return (
@@ -136,51 +82,10 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 					</TrayWidget>
 				</Content>
 			</Body>
-			<Modal show={ this.state.selectedNode } 
-				onHide = {this.onParsModalClose} 
-				centered
-			>
-				<Modal.Header closeButton>
-					<Modal.Title>
-						{this.state.selectedNode?.options?.name}
-					</Modal.Title>
-				</Modal.Header>
-
-				<Modal.Body>
-          {this.state.selectedNodesPars && 
-					Object.entries(this.state.selectedNodesPars).map((val: any, inx: any) => {
-            return (<Form.Group as={Row} controlId="formPlaintextPassword">
-							<Form.Label column sm="2">
-							  {val[0]}
-							</Form.Label>
-							<Col sm="10">
-                <Form.Control type="text" 
-                  value={val[1]} 
-                  onChange={this.onParChange(val[0])} />
-							</Col>
-						</Form.Group>);
-					})}
-          {this.state.selectedNodesStates && Object.entries(this.state.selectedNodesStates).map((val: any, inx: any) => {
-            return (<Form.Group as={Row} controlId="formPlaintextPassword">
-							<Form.Label column sm="2">
-							  {val[0]}
-							</Form.Label>
-							<Col sm="10">
-                <Form.Control type="text" 
-                  value={val[1]} 
-                  onChange={this.onStateChange(val[0])} />
-							</Col>
-						</Form.Group>);
-					})}
-				</Modal.Body>
-
-				<Modal.Footer>
-					<Button variant="secondary" onClick = {() => {this.deselectNode()}}>
-						Close
-					</Button>
-					<Button variant="primary" onClick={this.applyPars}>Apply</Button>
-				</Modal.Footer>
-			</Modal>
+            <ParModal key={this.state.selectedNode?.getID()} 
+                selectedNode={this.state.selectedNode} 
+                show={this.state.showParModal} 
+                onClose={() => {this.setState({showParModal: false})}}/>
 			</>
 		);
 	}
@@ -204,6 +109,90 @@ const Files = (props: any) => {
 				app={ props.diagramApp } color="rgb(150,150,150)" />
 		))
 	)
+}
+
+const ModalFields = (props: any) => {
+    return (
+        <>{props.fields && 
+            Object.entries(props.fields).map((val: any, inx: any) => {
+                return (<Form.Group as={Row} controlId="val[0]">
+                    <Form.Label column sm="2">
+                        {val[0]}
+                    </Form.Label>
+                    <Col sm="10">
+                        <Form.Control type="text" 
+                            value={val[1]} 
+                            onChange={props.onChange(val[0])} />
+                    </Col>
+                    </Form.Group>);
+            })
+        }</>)
+}
+
+class ParModal extends React.Component<ParModalPropsTypes,ParModalStatesTypes> {
+    constructor(props: any) {
+        super(props);
+        console.log(this.props.selectedNode);
+        this.state = {
+            selectedNodesPars: Object.assign({}, this.props.selectedNode?.getOptions().parameters),
+            selectedNodesStates: Object.assign({}, this.props.selectedNode?.getOptions().states),
+        };
+    }
+
+    onParChange = (name: any) => (event: any) => {
+        let pars = Object.assign({}, this.state.selectedNodesPars)
+        pars[name] = event.target.value;
+        this.setState({selectedNodesPars: pars});
+    }
+
+    onStateChange = (name: any) => (event: any) => {
+        let states = Object.assign({}, this.state.selectedNodesStates)
+        states[name] = event.target.value;
+        this.setState({selectedNodesStates: states});
+    }
+
+    applyPars = (event: any) => {
+        let node = this.props.selectedNode;
+        node.getOptions().parameters = this.state.selectedNodesPars;
+        node.getOptions().states = this.state.selectedNodesStates;
+        this.deselectNode();
+    }
+
+    deselectNode = () => {
+        this.setState({
+            selectedNodesPars: null,
+            selectedNodesStates: null,
+        });
+        this.props.onClose();
+    }
+
+    render() {
+        
+        return (
+            <Modal show={ this.props.show } 
+                onHide = { this.deselectNode } 
+                centered
+            >
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        { this.props.selectedNode?.options?.name }
+                    </Modal.Title>
+                </Modal.Header>
+
+                <Modal.Body>
+                    <ModalFields fields={ this.state.selectedNodesPars } onChange={ this.onParChange } />
+                    <ModalFields fields={ this.state.selectedNodesStates } onChange={ this.onStateChange } />
+                </Modal.Body>
+
+                <Modal.Footer>
+                    <Button variant="secondary" onClick = {() => {this.deselectNode()}}>
+                        Close
+                    </Button>
+                    <Button variant="primary" onClick={this.applyPars}>Apply</Button>
+                </Modal.Footer>
+            </Modal>
+        )
+    }
 }
 
 export default Diagram;
