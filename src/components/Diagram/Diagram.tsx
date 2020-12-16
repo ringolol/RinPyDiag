@@ -4,15 +4,12 @@ import { TrayItemWidget, FileExplorer } from './Tray/TrayItemWidget';
 import { CanvasWidget } from '@projectstorm/react-canvas-core';
 import { Canvas } from './Canvas/Canvas';
 import styled from '@emotion/styled';
-import { ParModalPropsTypes, ParModalStatesTypes, PropsType, StatesTypes } from './DiagramContainer';
+import { PropsType, StatesTypes } from './DiagramContainer';
 import { BloksType, FilesType } from '../../types/types';
 import Preloader from '../common/Preloader/Preloader';
-import { Modal } from 'react-bootstrap';
-import { Button } from 'react-bootstrap';
-import { Form } from 'react-bootstrap';
-import { Col } from 'react-bootstrap';
-import { Row } from 'react-bootstrap';
 import { DiagNodeModel } from './Node/DiagNodeModel';
+import ParModal from './ParModal';
+import { diagramAPI } from '../../api/api';
 
 
 class Diagram extends React.Component<PropsType,StatesTypes> {
@@ -20,7 +17,8 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 		super(props);
 		this.state = {
 			selectedNode: null,
-            showParModal: false,
+			showParModal: false,
+			diagOutput: "",
 		}
 	}
 
@@ -56,7 +54,16 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
             showParModal: true,
         });
         node.setSelected(false);
-	}
+    }
+    
+    parseDiagram = () => {
+        diagramAPI.parseDiagram(this.props.diagramApp.getSerialized(), {t: 5, dt: 0.01})
+            .then(response => { 
+				console.log(response);
+				let output = this.state.diagOutput + response?.data.output;
+				this.setState({diagOutput: output});
+			});
+    }
   
 	render() {
 		return (
@@ -83,6 +90,10 @@ class Diagram extends React.Component<PropsType,StatesTypes> {
 							: <Preloader color='#b1aaaa' /> }
 					</TrayWidget>
 				</Content>
+                <Footer>
+                    <Output readOnly={true} value={this.state.diagOutput}></Output>
+                    <RunBtn onClick={this.parseDiagram}>RUN</RunBtn>
+                </Footer>
 			</Body>
             <ParModal key={this.state.selectedNode?.getID()} 
                 selectedNode={this.state.selectedNode} 
@@ -113,95 +124,32 @@ const Files = (props: any) => {
 	)
 }
 
-const ModalFields = (props: any) => {
-    return (
-        <>{props.fields && 
-            Object.entries(props.fields).map((val: any, inx: any) => {
-                return (<Form.Group as={Row} controlId="val[0]">
-                    <Form.Label column sm="2">
-                        {val[0]}
-                    </Form.Label>
-                    <Col sm="10">
-                        <Form.Control type="text" 
-                            value={val[1]} 
-                            onChange={props.onChange(val[0])} />
-                    </Col>
-                    </Form.Group>);
-            })
-        }</>)
-}
-
-class ParModal extends React.Component<ParModalPropsTypes,ParModalStatesTypes> {
-    constructor(props: any) {
-        super(props);
-        this.state = {
-            selectedNodesPars: Object.assign({}, this.props.selectedNode?.getOptions().parameters),
-            selectedNodesStates: Object.assign({}, this.props.selectedNode?.getOptions().states),
-        };
-    }
-
-    onParChange = (name: any) => (event: any) => {
-        let pars = Object.assign({}, this.state.selectedNodesPars)
-        pars[name] = event.target.value;
-        this.setState({selectedNodesPars: pars});
-    }
-
-    onStateChange = (name: any) => (event: any) => {
-        let states = Object.assign({}, this.state.selectedNodesStates)
-        states[name] = event.target.value;
-        this.setState({selectedNodesStates: states});
-    }
-
-    applyPars = (event: any) => {
-        let node = this.props.selectedNode;
-        node!.getOptions().parameters = this.state.selectedNodesPars!;
-        node!.getOptions().states = this.state.selectedNodesStates!;
-        this.deselectNode();
-    }
-
-    deselectNode = () => {
-        this.setState({
-            selectedNodesPars: null,
-            selectedNodesStates: null,
-        });
-        this.props.onClose();
-    }
-
-    render() { 
-        return (
-            <Modal show={ this.props.show } 
-                onHide = { this.deselectNode } 
-                centered
-            >
-                <Modal.Header closeButton>
-                    <Modal.Title>
-                        { this.props.selectedNode?.getOptions()?.name }
-                    </Modal.Title>
-                </Modal.Header>
-
-                <Modal.Body>
-                    <ModalFields fields={ this.state.selectedNodesPars } onChange={ this.onParChange } />
-                    <ModalFields fields={ this.state.selectedNodesStates } onChange={ this.onStateChange } />
-                </Modal.Body>
-
-                <Modal.Footer>
-                    <Button variant="secondary" onClick = {() => {this.deselectNode()}}>
-                        Close
-                    </Button>
-                    <Button variant="primary" onClick={this.applyPars}>Apply</Button>
-                </Modal.Footer>
-            </Modal>
-        )
-    }
-}
-
 export default Diagram;
+
+const Footer = styled.div`
+flex-grow: 1;
+display: flex;
+flex-direction: row;
+background: black;
+`;
+
+const Output = styled.textarea`
+display: flex;
+flex-grow: 1;
+background: darkgray;
+`;
+
+const RunBtn = styled.button`
+background: green;
+width: 70px;
+color: white;
+`;
 
 const Body = styled.div`
 flex-grow: 1;
 display: flex;
 flex-direction: column;
-min-height: 93%;
+min-height: 90%;
 `;
 
 const Content = styled.div`

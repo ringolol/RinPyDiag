@@ -1,16 +1,13 @@
 import axios from 'axios';
+import { isCallChain } from 'typescript';
 import { errorsLog } from '../utils/logs/errorsLog';
 // config API
-const baseURL = 'https://31.134.153.18/'; // http://127.0.0.1:8000/ |  https://31.134.153.18/
-
-// axios.defaults.xsrfHeaderName = "X-CSRFToken";  // delete this ?
-// axios.defaults.xsrfCookieName = "csrftoken";  // delete this ?
+// const baseURL = 'https://31.134.153.18/';
+const baseURL =  'http://127.0.0.1:8000/';
 
 const instance = axios.create({ 
     baseURL: baseURL,
     withCredentials: true,
-    // xsrfCookieName: 'csrftoken',  // delete this ?
-    // xsrfHeaderName: 'X-CSRFToken',  // delete this ?
     timeout: 10000,
     headers: {
         'Accept': 'application/json',
@@ -97,5 +94,11 @@ export const diagramAPI = {
     getBlocks() {
         return instance.get('/diagram/api/blocks/', {})
         .catch(error => errorsLog(error));
+    },
+    parseDiagram(diag: any, calc: any) {
+        return instance.post('/diagram/api/parse', {diag: diag, calc: calc}, {})
+        .catch(error => errorsLog(error));
     }
 }
+
+// diagramAPI.parseDiagram({lol: "lol"}).then(response => console.log(response));

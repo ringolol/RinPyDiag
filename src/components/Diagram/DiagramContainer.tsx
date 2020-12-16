@@ -34,6 +34,7 @@ type MapDispatchPropsType = {
 export type StatesTypes = {
     selectedNode: DiagNodeModel | null,
     showParModal: boolean,
+    diagOutput: string,
 }
 type OwnPropsType = {
 
